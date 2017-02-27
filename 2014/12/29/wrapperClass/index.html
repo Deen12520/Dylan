@@ -1,0 +1,686 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="GliC1jSe3E" />
+  
+    <title>JAVA基本类型和包装类 | AlexYoung&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="AlexYoung">
+    
+    <meta name="description" itemprop="description" content="Java语言是一个面向对象的语言，但是Java中的基本数据类型却是不面向对象的，为了解决这个不足，在设计类时为每个基本数据类型设计了一个对应的类进行代表，统称为包装类(Wrapper Class).">
+    
+    
+    
+    
+    <link rel="alternative" href="/atom.xml" title="AlexYoung&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="AlexYoung&#39;s blog" title="AlexYoung&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="AlexYoung&#39;s blog">AlexYoung&#39;s blog</a></h1>
+				<h2 class="blog-motto">当你的才华还撑不起你的野心时，你就应该静下心来学习。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:alexyyek.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/12/29/wrapperClass/" title="JAVA基本类型和包装类" itemprop="url">JAVA基本类型和包装类</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/118224772589648180000?rel=author" title="AlexYoung" target="_blank" itemprop="author">AlexYoung</a>
+		
+  <p class="article-time">
+    <time datetime="2014-12-29T09:03:38.000Z" itemprop="datePublished"> 发表于 12月 29 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA的包装类"><span class="toc-number">1.</span> <span class="toc-text">JAVA的包装类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#包装类共同的方法"><span class="toc-number">1.1.</span> <span class="toc-text">包装类共同的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#装箱和拆箱"><span class="toc-number">1.2.</span> <span class="toc-text">装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义"><span class="toc-number">1.2.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现机制"><span class="toc-number">1.2.2.</span> <span class="toc-text">实现机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#面试问题"><span class="toc-number">1.2.3.</span> <span class="toc-text">面试问题</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="JAVA的包装类">JAVA的包装类</h2>
+<p>Java语言是一个面向对象的语言，但是Java中的基本数据类型却是不面向对象的，这在实际使用时存在很多的不便，为了解决这个不足，在设计类时为每个基本数据类型设计了一个对应的类进行代表，这样八个和基本数据类型对应的类统称为包装类(Wrapper Class)，有些地方也翻译为外覆类或数据类型类，如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">基本类型</th>
+<th style="text-align:center">大小</th>
+<th style="text-align:center">包装器类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">Boolean</td>
+</tr>
+<tr>
+<td style="text-align:center">char</td>
+<td style="text-align:center">16bit</td>
+<td style="text-align:center">Character</td>
+</tr>
+<tr>
+<td style="text-align:center">byte</td>
+<td style="text-align:center">8bit</td>
+<td style="text-align:center">Byte</td>
+</tr>
+<tr>
+<td style="text-align:center">short</td>
+<td style="text-align:center">16bit</td>
+<td style="text-align:center">Short</td>
+</tr>
+<tr>
+<td style="text-align:center">int</td>
+<td style="text-align:center">32bit</td>
+<td style="text-align:center">Integer</td>
+</tr>
+<tr>
+<td style="text-align:center">long</td>
+<td style="text-align:center">64bit</td>
+<td style="text-align:center">Long</td>
+</tr>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">32bit</td>
+<td style="text-align:center">Float</td>
+</tr>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">64bit</td>
+<td style="text-align:center">Double</td>
+</tr>
+<tr>
+<td style="text-align:center">void</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">Void</td>
+</tr>
+</tbody>
+</table>
+<p>Java中的包装器类有两个主要的目的： </p>
+<ol>
+<li>提供一种机制，将基本值“包装”到对象中，从而使基本值能够包含在为对象而保留的操作中，比如添加到Collections 中，或者从带对象返回值的方法中返回。注意，java5增加了自动装箱和拆箱，程序员过去需手工执行的许多包装操作，现在可以由java自动处理了。 </li>
+<li>为基本值提供分类功能。这些功能大多数于各种转换有关：在基本值和String对象间相互转换，在基本值和String对象之间按不同基数转换，如二进制、八进制和十六进制。 </li>
+</ol>
+<h3 id="包装类共同的方法">包装类共同的方法</h3>
+<ul>
+<li>带有<code>基本值参数</code>并创建包装类对象的构造函数。如利用Integer包装类创建对象，Integer obj=new Integer(145);</li>
+<li>带有<code>字符串参数</code>并创建包装类对象的构造函数.如：new Integer(“-45.36”);</li>
+<li>可生成对象基本值的<code>typeValue</code>方法，如：obj.intValue();</li>
+<li>将字符串转换为基本值的<code>parseType</code>方法，如：Integer.parseInt(args[0]);</li>
+<li>生成哈稀表代码的<code>hashCode</code>方法，如：obj.hasCode();</li>
+<li>对同一个类的两个对象进行比较的<code>equals()</code>方法，如：obj1.eauqls(obj2);</li>
+<li>生成字符串表示法的<code>toString()</code>方法，如：obj.toString().<br><br></li>
+</ul>
+<hr>
+<h3 id="装箱和拆箱">装箱和拆箱</h3>
+<p>自动装箱和拆箱问题是Java中一个老生常谈的问题了，今天就来一些看一下装箱和拆箱中的若干问题。本文先讲述装箱和拆箱最基本的东西，再来看一下面试笔试中经常遇到的与装箱、拆箱相关的问题。<br><br></p>
+<h4 id="定义">定义</h4>
+<p>在前面的文章中提到，Java为每种基本数据类型都提供了对应的包装器类型，至于为什么会为每种基本数据类型提供包装器类型在此不进行阐述，有兴趣的朋友可以查阅相关资料。在Java SE5之前，如果要生成一个数值为10的Integer对象，必须这样进行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Integer i = <span class="keyword">new</span> Integer(<span class="number">100</span>);</div></pre></td></tr></table></figure>
+
+<p>而在从Java SE5开始就提供了自动装箱的特性，如果要生成一个数值为10的Integer对象，只需要这样就可以了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> i = <span class="number">100</span>;</div></pre></td></tr></table></figure>
+
+<p>这个过程中会自动根据数值创建对应的 Integer对象，这就是装箱。<br>那什么是拆箱呢？顾名思义，跟装箱对应，就是自动将包装器类型转换为基本数据类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Integer i = <span class="number">10</span>; <span class="comment">//装箱</span></div><div class="line"><span class="keyword">int</span> index = i;  <span class="comment">//拆箱</span></div></pre></td></tr></table></figure>
+
+<p>简单一点说，装箱就是自动将基本数据类型转换为包装器类型；拆箱就是自动将包装器类型转换为基本数据类型。</p>
+<p>注意：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Integer test = <span class="keyword">null</span>;</div><div class="line"><span class="keyword">int</span> f = test.intValue();</div></pre></td></tr></table></figure>
+
+<p>上面的代码编写时不会报错，但编译是通不过的。<br><br></p>
+<h4 id="实现机制">实现机制</h4>
+<p>我们就以Interger类为例，下面看一段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">    Integer i = <span class="number">10</span>; <span class="comment">//装箱</span></div><div class="line">    <span class="keyword">int</span> index = i;  <span class="comment">//拆箱</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>反编译class文件之后得到如下内容：</p>
+<p><center> <img src="http://alexyoung.qiniudn.com/101641567956500.jpg" alt=""> <center></center></center></p>
+<p>从反编译得到的字节码内容可以看出，在装箱的时候自动调用的是Integer的<code>valueOf(int)</code>方法。而在拆箱的时候自动调用的是Integer的<code>intValue</code>方法。</p>
+<p>其他的也类似，比如Double、Character，不相信的朋友可以自己手动尝试一下。</p>
+<p>因此可以用一句话总结装箱和拆箱的实现过程：</p>
+<p><strong>装箱过程是通过调用包装器的valueOf方法实现的，而拆箱过程是通过调用包装器的xxxValue方法实现的。（xxx代表对应的基本数据类型）。</strong></p>
+<p><br></p>
+<hr>
+<p><br></p>
+<h4 id="面试问题">面试问题</h4>
+<p>虽然大多数人对装箱和拆箱的概念都清楚，但是在面试和笔试中遇到了与装箱和拆箱的问题却不一定会答得上来。下面列举一些常见的与装箱/拆箱有关的面试题，建议先自己尝试编译看源码做做。</p>
+<ul>
+<li>下面这段代码的输出结果是什么？</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">        Integer i1 = <span class="number">100</span>;</div><div class="line">        Integer i2 = <span class="number">100</span>;</div><div class="line">        Integer i3 = <span class="number">200</span>;</div><div class="line">        Integer i4 = <span class="number">200</span>;</div><div class="line">        </div><div class="line">        System.out.println(i1==i2);</div><div class="line">        System.out.println(i3==i4);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>也许有些朋友会说都会输出false，或者也有朋友会说都会输出true。这里注意“==”和“equal”的区别：<br><br></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">基本类型</th>
+<th style="text-align:center">==</th>
+<th style="text-align:center">equals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">字符串变量</td>
+<td style="text-align:center">对象在内存中的首地址</td>
+<td style="text-align:center">字符串内容</td>
+</tr>
+<tr>
+<td style="text-align:center">非字符串变量</td>
+<td style="text-align:center">对象在内存中的首地址</td>
+<td style="text-align:center">对象在内存中的首地址</td>
+</tr>
+<tr>
+<td style="text-align:center">基本类型</td>
+<td style="text-align:center">值</td>
+<td style="text-align:center">不可用</td>
+</tr>
+<tr>
+<td style="text-align:center">包装类</td>
+<td style="text-align:center">地址</td>
+<td style="text-align:center">内容</td>
+</tr>
+</tbody>
+</table>
+<p>结果：<br>true<br>false</p>
+<p>为什么会出现这样的结果？输出结果表明 i1 和 i2 指向的是同一个对象，而 i3 和 i4 指向的是不同的对象。此时只需一看源码便知究竟，下面这段代码是Integer的<code>valueOf</code>方法的具体实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span>(<span class="keyword">int</span> i) {</div><div class="line">        <span class="keyword">if</span>(i &gt;= -<span class="number">128</span> && i &lt;= IntegerCache.high)</div><div class="line">            <span class="keyword">return</span> IntegerCache.cache[i + <span class="number">128</span>];</div><div class="line">        <span class="keyword">else</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</div><div class="line">    }</div></pre></td></tr></table></figure>
+
+<p>从这2段代码可以看出，在通过valueOf方法创建Integer对象的时候，如果数值在 [-128,127] 之间，便返回指向IntegerCache.cache中已经存在的对象的引用；否则创建一个新的Integer对象。</p>
+<p>上面的代码中 i1 和 i2 的数值为100，因此会直接从cache中取已经存在的对象，所以 i1 和 i2 指向的是同一个对象，而 i3 和 i4 则是分别指向不同的对象。</p>
+<ul>
+<li>下面这段代码的输出结果是什么？</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">        Double i1 = <span class="number">100.0</span>;</div><div class="line">        Double i2 = <span class="number">100.0</span>;</div><div class="line">        Double i3 = <span class="number">200.0</span>;</div><div class="line">        Double i4 = <span class="number">200.0</span>;</div><div class="line">        </div><div class="line">        System.out.println(i1==i2);</div><div class="line">        System.out.println(i3==i4);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>也许有的朋友会认为跟上面一道题目的输出结果相同，但是事实上却不是。实际输出结果为：<br>false<br>false<br>至于具体为什么，读者可以去查看Double类的<code>valueOf</code>的实现。</p>
+<p>在这里只解释一下为什么Double类的valueOf方法会采用与Integer类的valueOf方法不同的实现。很简单：在某个范围内的整型数值的个数是有限的，而浮点数却不是。</p>
+<p>注意，Integer、Short、Byte、Character、Long这几个类的valueOf方法的实现是类似的，Double、Float的valueOf方法的实现是类似的。</p>
+<ul>
+<li>下面这段代码的输出结果是什么？</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">        Boolean i1 = <span class="keyword">false</span>;</div><div class="line">        Boolean i2 = <span class="keyword">false</span>;</div><div class="line">        Boolean i3 = <span class="keyword">true</span>;</div><div class="line">        Boolean i4 = <span class="keyword">true</span>;</div><div class="line">         </div><div class="line">        System.out.println(i1==i2);</div><div class="line">        System.out.println(i3==i4);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>输出结果为：<br>true<br>true<br>至于为什么是这个结果，同样地，看了Boolean类的源码也会一目了然。下面是Boolean的valueOf方法的具体实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> Boolean <span class="title">valueOf</span>(<span class="keyword">boolean</span> b) {</div><div class="line">        <span class="keyword">return</span> (b ? TRUE : FALSE);</div><div class="line">    }</div></pre></td></tr></table></figure>
+
+<p>至于TRUE和FALSE的定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="javadoc">/**</span></div><div class="line">     * The {@code Boolean} object corresponding to the primitive</div><div class="line">     * value {@code true}.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Boolean TRUE = <span class="keyword">new</span> Boolean(<span class="keyword">true</span>);</div><div class="line"></div><div class="line">    <span class="javadoc">/**</span></div><div class="line">     * The {@code Boolean} object corresponding to the primitive</div><div class="line">     * value {@code false}.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Boolean FALSE = <span class="keyword">new</span> Boolean(<span class="keyword">false</span>);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>谈谈Integer i = new Integer(xxx)和Integer i =xxx;这两种方式的区别。<br>当然，这个题目属于比较宽泛类型的。但是要点一定要答上，我总结一下主要有以下这两点区别：</li>
+</ul>
+<p>1）第一种方式不会触发自动装箱的过程；而第二种方式会触发；</p>
+<p>2）在执行效率和资源占用上的区别。第二种方式的执行效率和资源占用在一般性情况下要优于第一种情况（注意这并不是绝对的）。</p>
+<ul>
+<li>下面这段代码的输出结果是什么？</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">        Integer a = <span class="number">1</span>;</div><div class="line">        Integer b = <span class="number">2</span>;</div><div class="line">        Integer c = <span class="number">3</span>;</div><div class="line">        Integer d = <span class="number">3</span>;</div><div class="line">        Integer e = <span class="number">321</span>;</div><div class="line">        Integer f = <span class="number">321</span>;</div><div class="line">        Long g = <span class="number">3</span>L;</div><div class="line">        Long h = <span class="number">2</span>L;</div><div class="line">         </div><div class="line">        System.out.println(c==d);</div><div class="line">        System.out.println(e==f);</div><div class="line">        System.out.println(c==(a+b));</div><div class="line">        System.out.println(c.equals(a+b));</div><div class="line">        System.out.println(g==(a+b));</div><div class="line">        System.out.println(g.equals(a+b));</div><div class="line">        System.out.println(g.equals(a+h));</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>先别看输出结果，读者自己想一下这段代码的输出结果是什么。这里面需要注意的是：当 “==” 运算符的两个操作数都是 包装器类型的引用，则是比较指向的是否是同一个对象，而如果其中有一个操作数是表达式（即包含算术运算）则比较的是数值（即会触发自动拆箱的过程）。另外，对于包装器类型，equals方法并不会进行类型转换。明白了这2点之后，上面的输出结果便一目了然：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">true</span></div><div class="line"><span class="keyword">false</span></div><div class="line"><span class="keyword">true</span></div></pre></td></tr></table></figure>
+
+<p>第一个和第二个输出结果没有什么疑问。第三句由于  a+b 包含了算术运算，因此会触发自动拆箱过程（会调用intValue方法），因此它们比较的是数值是否相等。而对于c.equals(a+b)会先触发自动拆箱过程，再触发自动装箱过程，也就是说a+b，会先各自调用intValue方法，得到了加法运算后的数值之后，便调用Integer.valueOf方法，再进行equals比较。同理对于后面的也是这样，不过要注意倒数第二个和最后一个输出的结果（如果数值是int类型的，装箱过程调用的是Integer.valueOf；如果是long类型的，装箱调用的Long.valueOf方法）。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/coding/">coding</a>
+  </div>
+
+</div>
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://alexyyek.github.io/2014/12/29/wrapperClass/" data-title="JAVA基本类型和包装类 | AlexYoung&#39;s blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/12/29/Reference/" title="对象和引用">
+  <strong>上一篇：</strong><br/>
+  <span>
+  对象和引用</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/12/27/ipv6/"  title="教育网配置IPV6回避收费及轻松翻墙">
+ <strong>下一篇：</strong><br/> 
+ <span>教育网配置IPV6回避收费及轻松翻墙
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+
+<section class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JAVA的包装类"><span class="toc-number">1.</span> <span class="toc-text">JAVA的包装类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#包装类共同的方法"><span class="toc-number">1.1.</span> <span class="toc-text">包装类共同的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#装箱和拆箱"><span class="toc-number">1.2.</span> <span class="toc-text">装箱和拆箱</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义"><span class="toc-number">1.2.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现机制"><span class="toc-number">1.2.2.</span> <span class="toc-text">实现机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#面试问题"><span class="toc-number">1.2.3.</span> <span class="toc-text">面试问题</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/JVM/" title="JVM">JVM<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Java/" title="Java">Java<sup>24</sup></a></li>
+		
+			<li><a href="/categories/生活感悟/" title="生活感悟">生活感悟<sup>3</sup></a></li>
+		
+			<li><a href="/categories/黑科技/" title="黑科技">黑科技<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>18</sup></a></li>
+		
+			<li><a href="/tags/leetcode/" title="leetcode">leetcode<sup>6</sup></a></li>
+		
+			<li><a href="/tags/stack/" title="stack">stack<sup>3</sup></a></li>
+		
+			<li><a href="/tags/skill/" title="skill">skill<sup>3</sup></a></li>
+		
+			<li><a href="/tags/life/" title="life">life<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Tree/" title="Tree">Tree<sup>2</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Arrays/" title="Arrays">Arrays<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/" title="Bit Manipulation">Bit Manipulation<sup>1</sup></a></li>
+		
+			<li><a href="/tags/heap/" title="heap">heap<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Movie/" title="Movie">Movie<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dfs/" title="dfs">dfs<sup>1</sup></a></li>
+		
+			<li><a href="/tags/consectetur/" title="consectetur">consectetur<sup>0</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://coolshell.cn/" target="_blank" title="CoolShell">CoolShell</a></li>
+	  <li><a href="http://it.deepinmind.com/index.html" target="_blank" title="DeepinMind">DeepinMind</a><li>
+	  <li><a href="http://mindhacks.cn/" target="_blank" title="MindHacks">MindHacks</a></li> 
+	  <li><a href="https://www.byvoid.com/" target="_blank" title="Beyond the Void">Beyond the Void</a></li> 
+	  <li><a href="http://rednaxelafx.iteye.com/" target="_blank" title="Script Ahead, Code Behind">Script Ahead,Code Behind</a></li> 
+	   <li><a href="http://wmbriggs.com/blog/" target="_blank" title="WILLIAM M. BRIGGS">WILLIAM M. BRIGGS</a></li> 
+	  </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1397989251&verifier=23b91096&dpc=1"></iframe>
+</div>
+
+  <div class="pay">
+  <p class="asidetitle">赞助我</p>
+	<aside id="text-8" class="widget widget_text">
+	<br/>
+	<div align="center">
+	<div class="textwidget">
+	<form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK"> <input name="optEmail" type="hidden" value="alexyyek@126.com"> 
+	<input name="payAmount" type="hidden" value="10">
+	<input name="title" type="hidden" value="赞助AlexYoung">
+	<input name="memo" type="hidden" value="感谢您的赞助">
+	<input name="pay" type="image" value="捐款" src="/img/alipay1.png">
+	</form>
+	</div>
+</aside>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div align="center">
+<br/>
+	欢迎第
+	<a href="http://www.amazingcounters.com"><img border="0" src="http://cc.amazingcounters.com/counter.php?i=3183127&c=9549694" alt="AmazingCounters.com">
+	</a>
+	位访问者
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Labeling is cheap. Show me the story <br/>
+			 </p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/Alexyyek" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/57383464" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="https://plus.google.com/118224772589648180000?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:alexyyek@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/Alexyyek/geekman" target="_blank" title="Pacman">Geekman</a> © 2015 
+		
+		<a href="http://alexyyek.github.io/about" target="_blank" title="AlexYoung">AlexYoung</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"alexyyek"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/x-mathjax-config"> 
+MathJax.Hub.Config({ 
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+}); 
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>

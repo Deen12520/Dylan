@@ -1,0 +1,584 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="GliC1jSe3E" />
+  
+    <title>对象和引用 | AlexYoung&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="AlexYoung">
+    
+    <meta name="description" itemprop="description" content="When you&#39;re passing primitives into a method，you get a distinct copy of the primitive. When you&#39;re passing a reference into a method, you get a copy of the reference.">
+    
+    
+    
+    
+    <link rel="alternative" href="/atom.xml" title="AlexYoung&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="AlexYoung&#39;s blog" title="AlexYoung&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="AlexYoung&#39;s blog">AlexYoung&#39;s blog</a></h1>
+				<h2 class="blog-motto">当你的才华还撑不起你的野心时，你就应该静下心来学习。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:alexyyek.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/12/29/Reference/" title="对象和引用" itemprop="url">对象和引用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/118224772589648180000?rel=author" title="AlexYoung" target="_blank" itemprop="author">AlexYoung</a>
+		
+  <p class="article-time">
+    <time datetime="2014-12-29T13:43:15.000Z" itemprop="datePublished"> 发表于 12月 29 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象和引用"><span class="toc-number">1.</span> <span class="toc-text">对象和引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象"><span class="toc-number">1.1.</span> <span class="toc-text">对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用"><span class="toc-number">1.2.</span> <span class="toc-text">引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例讲解"><span class="toc-number">1.3.</span> <span class="toc-text">实例讲解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数传递"><span class="toc-number">1.4.</span> <span class="toc-text">参数传递</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例一"><span class="toc-number">1.4.1.</span> <span class="toc-text">例一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例二"><span class="toc-number">1.4.2.</span> <span class="toc-text">例二</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例三"><span class="toc-number">1.4.3.</span> <span class="toc-text">例三</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<p>Java中对象和引用的东西之前看了不少，但一方面因为网上知识过于繁杂，不能很好的梳理，另一方面不同的博客讲解专业程度不一样，可能会导致一定的误解。此篇博客争取以最精炼，最具条理的方式理清其中的难点和疑点。</p>
+<h2 id="对象和引用">对象和引用</h2>
+<h3 id="对象">对象</h3>
+<blockquote>
+<p>《Java编程思想》：按照通俗的说法，每个对象都是某个类（class）的一个实例（instance），这里，‘类’就是‘类型’的同义词。</p>
+</blockquote>
+<p><strong>理解本质</strong>：对象是类的实例。例如<a href="http://ww2.sinaimg.cn/bmiddle/53539f83jw1emh2fiopjtj20u01hc4qp.jpg" target="_blank" rel="external">Alex</a>是人类，Alex是对象，就是“人类”的实例。对象一般存储在堆中。</p>
+<h3 id="引用">引用</h3>
+<blockquote>
+<p>《Java编程思想》： 每种编程语言都有自己的数据处理方式。有些时候，程序员必须注意将要处理的数据是什么类型。你是直接操纵元素，还是用某种基于特殊语法的间接表示（例如C/C++里的指针）来操作对象。所有这些在 Java 里都得到了简化，一切都被视为对象。因此，我们可采用一种统一的语法。尽管将一切都“看作”对象，但操纵的标识符实际是指向一个对象的“引用”（reference）。</p>
+</blockquote>
+<p><strong>理解本质</strong>：引用是指向对象的标识符。可以理解对象是一个个气球，我们通过引用这条绳子和它链接。引用存储在速度更快的堆栈中。 </p>
+<h3 id="实例讲解">实例讲解</h3>
+<p>首先看下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>{</div><div class="line">	String name;</div><div class="line">	String sex;</div><div class="line">	<span class="keyword">int</span> age;</div><div class="line">	</div><div class="line">	<span class="comment">//构造函数</span></div><div class="line">	<span class="keyword">public</span> <span class="title">People</span>(){</div><div class="line">	</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="title">People</span>(String name, String sex, <span class="keyword">int</span> age){</div><div class="line">		<span class="keyword">this</span>.name = name;</div><div class="line">		<span class="keyword">this</span>.sex = sex;</div><div class="line">		<span class="keyword">this</span>.age = age;</div><div class="line">	}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>people是一个类，包含属性 name、sex、age，有了这个类，我们创建对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">People one = <span class="keyword">new</span> People();</div></pre></td></tr></table></figure>
+
+<p>这条语句的动作称为创建一个对象，它包含了四个动作:</p>
+<ol>
+<li>右边的new People，是以Pelple类为模板，在堆空间中创建一个People类对象</li>
+<li>结尾的()，在对象创建后，立刻调用People类的构造函数，对刚生成的对象初始化。这个例子中包含了构造函数，如果没写，java会自动帮你补上。</li>
+<li>左侧的People one创建了一个People类的引用变量。即one是指向People对象的引用。</li>
+<li>“=”操作符使对象引用<strong>指向</strong>刚创建的People对象。注意是指向，不是赋值。</li>
+</ol>
+<p>可以将上面的话拆成两句，效果一样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">People one;</div><div class="line">one = <span class="keyword">new</span> People();</div></pre></td></tr></table></figure>
+
+<p>如果只执行了第一条语句，还没执行第二条，此时创建的引用变量one还没指向任何一个对象，它的值是null。引用变量可以指向某个对象，或者为null。然后看下面这段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">People two;</div><div class="line">two = one;</div></pre></td></tr></table></figure>
+
+<p>首先又创建了一个引用two，此时two指向null，第二句将one指向的地址传给two，发生了复制行为，注意这里复制的是<code>对象引用</code>，此时two也指向one所指的对象，具体如何传递后面会讲。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">two = <span class="keyword">new</span> People();</div></pre></td></tr></table></figure>
+
+<p>这句将two指向了一个新的对象，所以可以分析如下两条性质：</p>
+<ol>
+<li>一个引用可以指向0个或1个对象（一根绳子可以不系汽球，也可以系一个汽球）；</li>
+<li>一个对象可以有N个引用指向它（可以有N条绳子系住一个汽球）。 </li>
+</ol>
+<p>如果发生这样的情况：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">People one = <span class="keyword">new</span> People(<span class="string">"张三"</span>);</div><div class="line">People two = <span class="keyword">new</span> People(<span class="string">"李四"</span>);</div><div class="line">one = two;</div></pre></td></tr></table></figure>
+
+<p>按上面的逻辑，引用one先指向对象“张三”，然后又指向了引用two指向的“李四”，所以最后one和two都指向对象“李四”，问题是之前的对象“张三”呢？还在堆里么？</p>
+<p>多数书里说，它被Java的垃圾回收机制回收了。这不确切。</p>
+<blockquote>
+<p>正确地说，它已成为垃圾回收机制的处理对象。至于什么时候真正被回收，那要看垃圾回收机制的心情了。 </p>
+</blockquote>
+<p><br></p>
+<hr>
+<h3 id="参数传递">参数传递</h3>
+<p>参数传递是个大坑，面试时常常会被问及，但其实并不难，看透本质即可。</p>
+<blockquote>
+<p>《thinking in Java》：When you’re passing primitives into a method，you get a distinct copy of the primitive. When you’re passing a reference into a method, you get a copy of the reference.</p>
+</blockquote>
+<p><strong>本质</strong>：不管JAVA参数类型是什么，一律传递参数的<strong><code>副本</code></strong></p>
+<p><br></p>
+<h4 id="例一">例一</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">		<span class="keyword">boolean</span> test = <span class="keyword">true</span>;</div><div class="line">		System.out.println(<span class="string">"before test() :"</span> + test);</div><div class="line">		test(test);</div><div class="line">		System.out.println(<span class="string">"after test() :"</span> + test);</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span>(<span class="keyword">boolean</span> test){</div><div class="line">		test = !test;</div><div class="line">		System.out.println(<span class="string">"In test() :"</span> + test);</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<p><strong>分析</strong>：首先声明一个基本类型为boolean的对象true，并用test指向它，在函数test内，引用test将值的副本传递进去，所以原本的test不改变，在test内输出false，而after test仍然还是true。<br><strong>注意</strong>：基本类型传值的副本，对象变量传引用的副本<br><br></p>
+<h4 id="例二">例二</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">		StringBuffer string = <span class="keyword">new</span> StringBuffer(<span class="string">"Hello"</span>);</div><div class="line">		test(string);</div><div class="line">		System.out.println(string);</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span>(StringBuffer str){</div><div class="line">		str.append(<span class="string">",world!"</span>);</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<p><strong>分析</strong>：首先声明一个stringbuffer类型的对象型变量，string指向对象Hello，在test内将string的引用副本传给str，因此string和str都在栈内指向同一个堆地址，只不过所处栈地址不同。test内改变了str指向的对象，因此string指向的对象也改变了，变成Hello,world!.<br><br></p>
+<h4 id="例三">例三</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">class value{</div><div class="line">	<span class="keyword">public</span> <span class="keyword">int</span> i = <span class="number">15</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">dataType</span> </span>{</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">		dataType type = <span class="keyword">new</span> dataType();</div><div class="line">		type.first();</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">first</span>(){</div><div class="line">		<span class="keyword">int</span> i = <span class="number">5</span>;</div><div class="line">		value v = <span class="keyword">new</span> value();</div><div class="line">		v.i = <span class="number">25</span>;</div><div class="line">		second(v, i);</div><div class="line">		System.out.println(v.i);</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">second</span>(value v, <span class="keyword">int</span> i){</div><div class="line">		i = <span class="number">0</span>;</div><div class="line">		v.i = <span class="number">20</span>;</div><div class="line">		value val = <span class="keyword">new</span> value();</div><div class="line">		v = val;</div><div class="line">		System.out.println(v.i + <span class="string">" "</span> + i);</div><div class="line">	}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ol>
+<li><p>在first内，首先程序在栈内存中开辟了一块地址编号为AD9500内存空间，用于存放<code>v</code>的引用地址，里边放的值是堆内存中的一个地址，示例中的值为BE2500<br><center> <img src="http://alexyoung.qiniudn.com/QQ图片20141229225902.png" alt=""> <center></center></center></p>
+</li>
+<li><p>调用函数second，程序在栈内开辟地址为AD9600内存空间存放v的副本，v的副本同样指向堆地址为BE2500的空间，然后将v的副本传入second，并且在second内，将v的副本所指对象<code>i=25</code>改为<code>i=20</code><br><center> <img src="http://alexyoung.qiniudn.com/QQ图片20141229225924.png" alt=""> <center></center></center></p>
+</li>
+<li><p>在second内，程序新建一个对象放在地址为BE2600的堆内，并用新的引用val（栈中地址为AD9700）指向它，所以second中输出结果为：15 0<br><center> <img src="http://alexyoung.qiniudn.com/QQ图片20141229225934.png" alt=""> <center></center></center></p>
+</li>
+<li><p>但原v并未改变，改变的只是它传入second的副本，所以在first中仍然输出<code>i=20</code><br><br></p>
+</li>
+</ol>
+<hr>
+<p><strong>PS</strong>：在JAVA里，“=”不能被看成是一个赋值语句，它不是在把一个对象赋给另外一个对象，它的执行过程实质上是将右边对象的地址传给了左边的引用，使得左边的引用指向了右边的对象。JAVA表面上看起来没有指针，但它的引用其实质就是一个指针，引用里面存放的并不是对象，而是该对象的地址，使得该引用指向了对象。在JAVA里，“=”语句不应该被翻译成赋值语句，因为它所执行的确实不是一个赋值的过程，而是一个传地址的过程，被译成赋值语句会造成很多误解，译得不准确。 </p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/coding/">coding</a>
+  </div>
+
+</div>
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://alexyyek.github.io/2014/12/29/Reference/" data-title="对象和引用 | AlexYoung&#39;s blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/12/31/GFW/" title="免费且使用便捷的翻墙方案">
+  <strong>上一篇：</strong><br/>
+  <span>
+  免费且使用便捷的翻墙方案</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/12/29/wrapperClass/"  title="JAVA基本类型和包装类">
+ <strong>下一篇：</strong><br/> 
+ <span>JAVA基本类型和包装类
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+
+<section class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象和引用"><span class="toc-number">1.</span> <span class="toc-text">对象和引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象"><span class="toc-number">1.1.</span> <span class="toc-text">对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用"><span class="toc-number">1.2.</span> <span class="toc-text">引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实例讲解"><span class="toc-number">1.3.</span> <span class="toc-text">实例讲解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数传递"><span class="toc-number">1.4.</span> <span class="toc-text">参数传递</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#例一"><span class="toc-number">1.4.1.</span> <span class="toc-text">例一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例二"><span class="toc-number">1.4.2.</span> <span class="toc-text">例二</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例三"><span class="toc-number">1.4.3.</span> <span class="toc-text">例三</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/JVM/" title="JVM">JVM<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Java/" title="Java">Java<sup>24</sup></a></li>
+		
+			<li><a href="/categories/生活感悟/" title="生活感悟">生活感悟<sup>3</sup></a></li>
+		
+			<li><a href="/categories/黑科技/" title="黑科技">黑科技<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>18</sup></a></li>
+		
+			<li><a href="/tags/leetcode/" title="leetcode">leetcode<sup>6</sup></a></li>
+		
+			<li><a href="/tags/stack/" title="stack">stack<sup>3</sup></a></li>
+		
+			<li><a href="/tags/skill/" title="skill">skill<sup>3</sup></a></li>
+		
+			<li><a href="/tags/life/" title="life">life<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Tree/" title="Tree">Tree<sup>2</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Arrays/" title="Arrays">Arrays<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/" title="Bit Manipulation">Bit Manipulation<sup>1</sup></a></li>
+		
+			<li><a href="/tags/heap/" title="heap">heap<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Movie/" title="Movie">Movie<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dfs/" title="dfs">dfs<sup>1</sup></a></li>
+		
+			<li><a href="/tags/consectetur/" title="consectetur">consectetur<sup>0</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://coolshell.cn/" target="_blank" title="CoolShell">CoolShell</a></li>
+	  <li><a href="http://it.deepinmind.com/index.html" target="_blank" title="DeepinMind">DeepinMind</a><li>
+	  <li><a href="http://mindhacks.cn/" target="_blank" title="MindHacks">MindHacks</a></li> 
+	  <li><a href="https://www.byvoid.com/" target="_blank" title="Beyond the Void">Beyond the Void</a></li> 
+	  <li><a href="http://rednaxelafx.iteye.com/" target="_blank" title="Script Ahead, Code Behind">Script Ahead,Code Behind</a></li> 
+	   <li><a href="http://wmbriggs.com/blog/" target="_blank" title="WILLIAM M. BRIGGS">WILLIAM M. BRIGGS</a></li> 
+	  </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1397989251&verifier=23b91096&dpc=1"></iframe>
+</div>
+
+  <div class="pay">
+  <p class="asidetitle">赞助我</p>
+	<aside id="text-8" class="widget widget_text">
+	<br/>
+	<div align="center">
+	<div class="textwidget">
+	<form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK"> <input name="optEmail" type="hidden" value="alexyyek@126.com"> 
+	<input name="payAmount" type="hidden" value="10">
+	<input name="title" type="hidden" value="赞助AlexYoung">
+	<input name="memo" type="hidden" value="感谢您的赞助">
+	<input name="pay" type="image" value="捐款" src="/img/alipay1.png">
+	</form>
+	</div>
+</aside>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div align="center">
+<br/>
+	欢迎第
+	<a href="http://www.amazingcounters.com"><img border="0" src="http://cc.amazingcounters.com/counter.php?i=3183127&c=9549694" alt="AmazingCounters.com">
+	</a>
+	位访问者
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Labeling is cheap. Show me the story <br/>
+			 </p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/Alexyyek" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/57383464" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="https://plus.google.com/118224772589648180000?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:alexyyek@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/Alexyyek/geekman" target="_blank" title="Pacman">Geekman</a> © 2015 
+		
+		<a href="http://alexyyek.github.io/about" target="_blank" title="AlexYoung">AlexYoung</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"alexyyek"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/x-mathjax-config"> 
+MathJax.Hub.Config({ 
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+}); 
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>

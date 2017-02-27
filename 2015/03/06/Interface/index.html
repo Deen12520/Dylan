@@ -1,0 +1,654 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="GliC1jSe3E" />
+  
+    <title>抽象类和接口 | AlexYoung&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="AlexYoung">
+    
+    <meta name="description" itemprop="description" content="Interfaces and abstract classes provide more structured way to separate interface from implementation.">
+    
+    
+    
+    
+    <link rel="alternative" href="/atom.xml" title="AlexYoung&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="AlexYoung&#39;s blog" title="AlexYoung&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="AlexYoung&#39;s blog">AlexYoung&#39;s blog</a></h1>
+				<h2 class="blog-motto">当你的才华还撑不起你的野心时，你就应该静下心来学习。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:alexyyek.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/03/06/Interface/" title="抽象类和接口" itemprop="url">抽象类和接口</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/118224772589648180000?rel=author" title="AlexYoung" target="_blank" itemprop="author">AlexYoung</a>
+		
+  <p class="article-time">
+    <time datetime="2015-03-06T13:31:27.000Z" itemprop="datePublished"> 发表于 3月 6 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#抽象类"><span class="toc-number">1.</span> <span class="toc-text">抽象类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接口"><span class="toc-number">2.</span> <span class="toc-text">接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抽象类与接口的区别"><span class="toc-number">3.</span> <span class="toc-text">抽象类与接口的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#语法层次"><span class="toc-number">3.1.</span> <span class="toc-text">语法层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设计层次"><span class="toc-number">3.2.</span> <span class="toc-text">设计层次</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>Thinking in Java ： 接口和内部类为我们提供了一种将接口与实现分离的更加结构化的方法。</p>
+</blockquote>
+<h2 id="抽象类">抽象类</h2>
+<p>在面向对象的概念中，所有的对象都是通过类来描绘的，但是反过来，并不是所有的类都是用来描绘对象的，如果一个类中没有包含足够的信息来描绘一个具体的对象，这样的类就是抽象类。</p>
+<p>抽象方法的声明规则：抽象方法只包含一个方法名，而没有方法体（无花括号）：abstract void f(); </p>
+<p>以抽象类Shapes为例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Shapes</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> width, height;</div><div class="line">    <span class="keyword">public</span> <span class="title">Shapes</span>(<span class="keyword">int</span> width, <span class="keyword">int</span> height) {</div><div class="line">        <span class="keyword">this</span>.width = width;</div><div class="line">        <span class="keyword">this</span>.height = height;</div><div class="line">    }</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">double</span> getArea();</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">double</span> getPerimeter();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>当Square类继承Shapes时，它提供了getArea和getPerimeter方法的实现：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Square</span> <span class="keyword">extends</span> <span class="title">Shapes</span> </span>{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getArea</span>() {</div><div class="line">        <span class="keyword">return</span> (width * height);</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getPerimeter</span>() {</div><div class="line">        <span class="keyword">return</span> (<span class="number">2</span> * width + <span class="number">2</span> * height);</div><div class="line">    }</div><div class="line">    <span class="keyword">public</span> <span class="title">Square</span>(<span class="keyword">int</span> width, <span class="keyword">int</span> height) {</div><div class="line">        <span class="keyword">super</span>(width, height);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>包含抽象方法的类叫做抽象类，如果一个类包含一个或多个抽象方法，该类必须被限定为抽象的。</p>
+<p>如果从一个抽象类继承，并想创建该导出类的对象，那么就必须为基类中的所有抽象方法提供方法定义。如果选择不做，那么导出类便也是抽象类，编译器会强制用<code>abstract</code>关键字来限定这个类。</p>
+<p>抽象类不能被实例化，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Public class Test{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args)  {</div><div class="line">        Shapes s1 = <span class="keyword">new</span> Square();</div><div class="line">        Square s2 = <span class="keyword">new</span> Square();</div><div class="line">        </div><div class="line">        s1.getArea();</div><div class="line">        s2.getPerimeter();</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>在使用抽象类时需要注意几点：</p>
+<ol>
+<li>抽象类不能被实例化，实例化的工作应该交由它的子类来完成。但类的其它功能依然存在，成员变量、成员方法和构造方法的访问方式和普通类一样。</li>
+<li>抽象方法必须由子类来进行<code>重写</code>。</li>
+<li>只要包含一个抽象方法的抽象类，该方法必须要定义成抽象类，不管是否还包含有其他方法。</li>
+<li>抽象类中可以包含具体的方法，当然也可以不包含抽象方法。</li>
+<li>abstract不能与final并列修饰同一个类。</li>
+<li>abstract不能与private、static、final或native并列修饰同一个方法。</li>
+</ol>
+<blockquote>
+<p> Think in java：创建抽象类和抽象方法非常有用,因为他们可以使类的抽象性明确起来,并告诉用户和编译器打算怎样使用他们.抽象类还是有用的重构器,因为它们使我们可以很容易地将公共方法沿着继承层次结构向上移动。</p>
+</blockquote>
+<h2 id="接口">接口</h2>
+<p>接口是一种比抽象类更加抽象的一系列方法的声明，是一些方法特征的集合，一个接口只有方法的特征没有方法的实现，因此这些方法可以在不同的地方被不同的类实现，而这些实现可以具有不同的行为（功能）。</p>
+<p>接口建立类与类之间的协议，它所提供的只是一种形式，而没有具体的实现。实现该接口的实现类<strong>必须要实现该接口的所有方法</strong>。</p>
+<p>接口是抽象类的延伸，Java了保证数据安全是不能多重继承的，也就是说继承只能存在一个父类。但是接口不同，一个类可以同时实现多个接口，不管这些接口之间有没有关系，所以接口弥补了抽象类不能多重继承的缺陷，但是推荐继承和接口共同使用，因为这样既可以保证数据安全性又可以实现多重继承。</p>
+<p>以Externalizable接口为例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Externalizable</span> <span class="keyword">extends</span> <span class="title">Serializable</span> </span>{</div><div class="line"></div><div class="line">    <span class="keyword">void</span> writeExternal(ObjectOutput out) <span class="keyword">throws</span> IOException;</div><div class="line"> </div><div class="line">    <span class="keyword">void</span> readExternal(ObjectInput in) <span class="keyword">throws</span> IOException, ClassNotFoundException;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>当你实现这个接口时，你就需要实现上面的两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> <span class="keyword">implements</span> <span class="title">Externalizable</span> </span>{</div><div class="line"> </div><div class="line">    <span class="keyword">int</span> employeeId;</div><div class="line">    String employeeName;</div><div class="line"> </div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readExternal</span>(ObjectInput in) <span class="keyword">throws</span> IOException, ClassNotFoundException {</div><div class="line">        employeeId = in.readInt();</div><div class="line">        employeeName = (String) in.readObject();</div><div class="line"> </div><div class="line">    }</div><div class="line"> </div><div class="line">    <span class="annotation">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeExternal</span>(ObjectOutput out) <span class="keyword">throws</span> IOException {</div><div class="line"> </div><div class="line">        out.writeInt(employeeId);</div><div class="line">        out.writeObject(employeeName);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>在使用接口过程中需要注意如下几个问题：</p>
+<ol>
+<li>Interface的所有<strong>方法访问权限</strong>自动被声明为<code>public</code>。确切的说只能为public，当然你可以显示的声明为protected、private，但是编译会出错.</li>
+<li>接口中可以定义“成员变量”，或者说是不可变的常量，因为接口中的“成员变量”会自动变为为<code>public static final</code>。可以通过类命名直接访问：ImplementClass.name。</li>
+<li>接口中不存在实现的方法。</li>
+<li>实现接口的非抽象类必须要实现该接口的所有方法。抽象类可以不用实现。</li>
+<li>不能使用new操作符实例化一个接口，但可以声明一个接口变量，该变量必须引用(refer to)一个实现该接口的类的对象。可以使用 instanceof 检查一个对象是否实现了某个特定的接口。例如：if(anObject instanceof Comparable)。</li>
+<li>在实现多接口的时候一定要避免方法名的重复。</li>
+</ol>
+<h2 id="抽象类与接口的区别">抽象类与接口的区别</h2>
+<p>尽管抽象类和接口之间存在较大的相同点，甚至有时候还可以互换，但这样并不能弥补他们之间的差异之处。下面将从语法层次和设计层次两个方面对抽象类和接口进行阐述。</p>
+<h3 id="语法层次">语法层次</h3>
+<p>在语法层次，java语言对于抽象类和接口分别给出了不同的定义。下面已Demo类来说明他们之间的不同之处。<br>使用抽象类来实现:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>{</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> method1();</div><div class="line">    </div><div class="line">    <span class="keyword">void</span> method2(){</div><div class="line">        <span class="comment">//具体实现</span></div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>使用接口来实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">interface Demo {</div><div class="line">    <span class="keyword">void</span> method1();</div><div class="line">    <span class="keyword">void</span> method2();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>抽象类方式中，抽象类可以拥有任意范围的成员数据，同时也可以拥有自己的非抽象方法.</p>
+<p>但是接口方式中，它仅能够有静态、不能修改的成员数据（但是我们一般是不会在接口中使用成员数据），同时它所有的方法都必须是抽象的。在某种程度上来说，接口是抽象类的特殊化。</p>
+<p>对子类而言，它只能继承一个抽象类（这是java为了数据安全而考虑的），但是却可以实现多个接口。</p>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">抽象类</th>
+<th style="text-align:center">接口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">实现</td>
+<td style="text-align:center">子类使用extends关键字来继承抽象类,它需要提供抽象类中所有声明的方法的实现。</td>
+<td style="text-align:center">子类使用关键字implements来实现接口,它需要提供接口中所有声明的方法的实现</td>
+</tr>
+<tr>
+<td style="text-align:center">构造器</td>
+<td style="text-align:center">抽象类可以有构造器</td>
+<td style="text-align:center">接口不能有构造器</td>
+</tr>
+<tr>
+<td style="text-align:center">方法</td>
+<td style="text-align:center">抽象类中可以拥有自己的成员变量和非抽象类方法</td>
+<td style="text-align:center">接口中只能存在静态的不可变的成员数据（不过一般都不在接口中定义成员数据），而且它的所有方法都是抽象的</td>
+</tr>
+<tr>
+<td style="text-align:center">访问修饰符</td>
+<td style="text-align:center">抽象方法可以有public、protected和default这些修饰符</td>
+<td style="text-align:center">接口方法默认修饰符是public。你不可以使用其它修饰符。</td>
+</tr>
+<tr>
+<td style="text-align:center">main方法</td>
+<td style="text-align:center">抽象方法可以有main方法并且我们可以运行它</td>
+<td style="text-align:center">接口没有main方法，因此我们不能运行它</td>
+</tr>
+<tr>
+<td style="text-align:center">多继承</td>
+<td style="text-align:center">抽象方法可以继承一个类和实现多个接口</td>
+<td style="text-align:center">接口只可以继承一个或多个其它接口</td>
+</tr>
+<tr>
+<td style="text-align:center">速度</td>
+<td style="text-align:center">它比接口速度要快</td>
+<td style="text-align:center">接口是稍微有点慢的，因为它需要时间去寻找在类中实现的方法。</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<h3 id="设计层次">设计层次</h3>
+<p>上面只是从语法层次和编程角度来区分它们之间的关系，这些都是低层次的，要真正使用好抽象类和接口，我们就必须要从较高层次来区分了。只有从设计理念的角度才能看出它们的本质所在。一般来说他们存在如下三个不同点：</p>
+<ol>
+<li><strong><code>抽象层次不同</code></strong>。抽象类是对类抽象，而接口是对行为的抽象。抽象类是对整个类整体进行抽象，包括属性、行为，但是接口却是对类局部（行为）进行抽象。</li>
+<li><strong><code>跨域不同</code></strong>。抽象类所跨域的是具有相似特点的类，而接口却可以跨域不同的类。我们知道抽象类是从子类中发现公共部分，然后泛化成抽象类，子类继承该父类即可，但是接口不同。实现它的子类可以不存在任何关系，共同之处。例如猫、狗可以抽象成一个动物类抽象类，具备叫的方法。鸟、飞机可以实现飞Fly接口，具备飞的行为，这里我们总不能将鸟、飞机共用一个父类吧！<strong>所以说抽象类所体现的是一种继承关系</strong>，要想使得继承关系合理，父类和派生类之间必须存在”is-a” 关系，即父类和派生类在概念本质上应该是相同的。对于接口则不然，并不要求接口的实现者和接口定义在概念本质上是一致的，仅仅是实现了接口定义的契约而已。</li>
+<li><strong><code>设计层次不同</code></strong>。对于抽象类而言，它是自下而上来设计的，我们要先知道子类才能抽象出父类，而接口则不同，它根本就不需要知道子类的存在，只需要定义一个规则即可，至于什么子类、什么时候怎么实现它一概不知。比如我们只有一个猫类在这里，如果你这是就抽象成一个动物类，是不是设计有点儿过度？我们起码要有两个动物类，猫、狗在这里，我们在抽象他们的共同点形成动物抽象类吧！所以说抽象类往往都是通过重构而来的！但是接口就不同，比如说飞，我们根本就不知道会有什么东西来实现这个飞接口，怎么实现也不得而知，我们要做的就是事前定义好飞的行为接口。<strong>所以说抽象类是自底向上抽象而来的，接口是自顶向下设计出来的</strong>。</li>
+</ol>
+<p>为了更好的阐述他们之间的区别，下面将使用一个例子来说明:</p>
+<p>我们有一个Door的抽象概念，它具备两个行为open()和close()，此时我们可以定义通过抽象类和接口来定义这个抽象概念：</p>
+<p>抽象类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> class Door{</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> open();</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> close();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">interface Door{</div><div class="line">    <span class="keyword">void</span> open();</div><div class="line">    <span class="keyword">void</span> close();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>至于其他的具体类可以通过使用extends使用抽象类方式定义Door或者Implements使用接口方式定义Door，这里发现两者并没有什么很大的差异。</p>
+<p>但是现在如果我们需要门具有报警的功能，那么该如何实现呢？</p>
+<ul>
+<li>解决方案一：给Door增加一个报警方法:clarm();</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> class Door{</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> open();</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> close();</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> clarm();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">interface Door{</div><div class="line">    <span class="keyword">void</span> open();</div><div class="line">    <span class="keyword">void</span> close();</div><div class="line">    <span class="keyword">void</span> clarm();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这种方法违反了面向对象设计中的一个核心原则：ISP (Interface Segregation Principle)，在Door的定义中把Door概念本身固有的行为方法和另外一个概念”报警器”的行为方 法混在了一起。这样引起的一个问题是那些仅仅依赖于Door这个概念的模块会因为”报警器”这个概念的改变而改变，反之依然。</p>
+<p>ISP（Interface Segregation Principle）：面向对象的一个核心原则。它表明使用多个专门的接口比使用单一的总接口要好。一个类对另外一个类的依赖性应当是建立在最小的接口上的。一个接口代表一个角色，不应当将不同的角色都交给一个接口。没有关系的接口合并在一起，形成一个臃肿的大接口，这是对角色和接口的污染。</p>
+<ul>
+<li>解决方案二</li>
+</ul>
+<p>既然open()、close()和alarm()属于两个不同的概念，那么我们依据ISP原则将它们分开定义在两个代表两个不同概念的抽象类里面，定义的方式有三种：</p>
+<ol>
+<li>两个都使用抽象类来定义。</li>
+<li>两个都使用接口来定义。</li>
+<li>一个使用抽象类定义，一个是用接口定义。</li>
+</ol>
+<p>由于Java不支持多继承所以第一种是不可行的。后面两种都是可行的，<strong>但是选择何种就反映了你对问题域本质的理解</strong>。</p>
+<p>如果选择第二种都是接口来定义，那么就反映了两个问题：1、我们可能没有理解清楚问题域，AlarmDoor在概念本质上到底是门还报警器。2、如果我们对问题域的理解没有问题，比如我们在分析时确定了AlarmDoor在本质上概念是一致的，那么我们在设计时就没有正确的反映出我们的设计意图。因为你使用了两个接口来进行定义，他们概念的定义并不能够反映上述含义。</p>
+<p>第三种，如果我们对问题域的理解是这样的：AlarmDoor本质上Door，但同时它也拥有报警的行为功能，这个时候我们使用第三种方案恰好可以阐述我们的设计意图。AlarmDoor本质是们，所以对于这个概念我们使用抽象类来定义，同时AlarmDoor具备报警功能，说明它能够完成报警概念中定义的行为功能，所以alarm可以使用接口来进行定义。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> class Door{</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> open();</div><div class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> close();</div><div class="line">}</div><div class="line"></div><div class="line">interface Alarm{</div><div class="line">    <span class="keyword">void</span> alarm();</div><div class="line">}</div><div class="line"></div><div class="line">class AlarmDoor extends Door implements Alarm{</div><div class="line">    <span class="keyword">void</span> open(){}</div><div class="line">    <span class="keyword">void</span> close(){}</div><div class="line">    <span class="keyword">void</span> alarm(){}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这种实现方式基本上能够明确的反映出我们对于问题领域的理解，正确的揭示我们的设计意图。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/coding/">coding</a>
+  </div>
+
+</div>
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://alexyyek.github.io/2015/03/06/Interface/" data-title="抽象类和接口 | AlexYoung&#39;s blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/03/13/Intership/" title="五天七面——正确定位自己">
+  <strong>上一篇：</strong><br/>
+  <span>
+  五天七面——正确定位自己</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/03/04/Polymorphism/"  title="Java多态性">
+ <strong>下一篇：</strong><br/> 
+ <span>Java多态性
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+
+<section class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#抽象类"><span class="toc-number">1.</span> <span class="toc-text">抽象类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接口"><span class="toc-number">2.</span> <span class="toc-text">接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抽象类与接口的区别"><span class="toc-number">3.</span> <span class="toc-text">抽象类与接口的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#语法层次"><span class="toc-number">3.1.</span> <span class="toc-text">语法层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设计层次"><span class="toc-number">3.2.</span> <span class="toc-text">设计层次</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/JVM/" title="JVM">JVM<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Java/" title="Java">Java<sup>24</sup></a></li>
+		
+			<li><a href="/categories/生活感悟/" title="生活感悟">生活感悟<sup>3</sup></a></li>
+		
+			<li><a href="/categories/黑科技/" title="黑科技">黑科技<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>18</sup></a></li>
+		
+			<li><a href="/tags/leetcode/" title="leetcode">leetcode<sup>6</sup></a></li>
+		
+			<li><a href="/tags/stack/" title="stack">stack<sup>3</sup></a></li>
+		
+			<li><a href="/tags/skill/" title="skill">skill<sup>3</sup></a></li>
+		
+			<li><a href="/tags/life/" title="life">life<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Tree/" title="Tree">Tree<sup>2</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Arrays/" title="Arrays">Arrays<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/" title="Bit Manipulation">Bit Manipulation<sup>1</sup></a></li>
+		
+			<li><a href="/tags/heap/" title="heap">heap<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Movie/" title="Movie">Movie<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dfs/" title="dfs">dfs<sup>1</sup></a></li>
+		
+			<li><a href="/tags/consectetur/" title="consectetur">consectetur<sup>0</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://coolshell.cn/" target="_blank" title="CoolShell">CoolShell</a></li>
+	  <li><a href="http://it.deepinmind.com/index.html" target="_blank" title="DeepinMind">DeepinMind</a><li>
+	  <li><a href="http://mindhacks.cn/" target="_blank" title="MindHacks">MindHacks</a></li> 
+	  <li><a href="https://www.byvoid.com/" target="_blank" title="Beyond the Void">Beyond the Void</a></li> 
+	  <li><a href="http://rednaxelafx.iteye.com/" target="_blank" title="Script Ahead, Code Behind">Script Ahead,Code Behind</a></li> 
+	   <li><a href="http://wmbriggs.com/blog/" target="_blank" title="WILLIAM M. BRIGGS">WILLIAM M. BRIGGS</a></li> 
+	  </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1397989251&verifier=23b91096&dpc=1"></iframe>
+</div>
+
+  <div class="pay">
+  <p class="asidetitle">赞助我</p>
+	<aside id="text-8" class="widget widget_text">
+	<br/>
+	<div align="center">
+	<div class="textwidget">
+	<form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK"> <input name="optEmail" type="hidden" value="alexyyek@126.com"> 
+	<input name="payAmount" type="hidden" value="10">
+	<input name="title" type="hidden" value="赞助AlexYoung">
+	<input name="memo" type="hidden" value="感谢您的赞助">
+	<input name="pay" type="image" value="捐款" src="/img/alipay1.png">
+	</form>
+	</div>
+</aside>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div align="center">
+<br/>
+	欢迎第
+	<a href="http://www.amazingcounters.com"><img border="0" src="http://cc.amazingcounters.com/counter.php?i=3183127&c=9549694" alt="AmazingCounters.com">
+	</a>
+	位访问者
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Labeling is cheap. Show me the story <br/>
+			 </p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/Alexyyek" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/57383464" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="https://plus.google.com/118224772589648180000?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:alexyyek@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/Alexyyek/geekman" target="_blank" title="Pacman">Geekman</a> © 2015 
+		
+		<a href="http://alexyyek.github.io/about" target="_blank" title="AlexYoung">AlexYoung</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"alexyyek"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/x-mathjax-config"> 
+MathJax.Hub.Config({ 
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+}); 
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>

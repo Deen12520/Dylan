@@ -1,0 +1,541 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="GliC1jSe3E" />
+  
+    <title>HeapSort | AlexYoung&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="AlexYoung">
+    
+    <meta name="description" itemprop="description" content="堆数据结构是一种数组对象，它可以被视为一颗完全二叉树，树中每个节点与数组中存放该节点值的元素对应。">
+    
+    
+    
+    
+    <link rel="alternative" href="/atom.xml" title="AlexYoung&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="AlexYoung&#39;s blog" title="AlexYoung&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="AlexYoung&#39;s blog">AlexYoung&#39;s blog</a></h1>
+				<h2 class="blog-motto">当你的才华还撑不起你的野心时，你就应该静下心来学习。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:alexyyek.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/12/07/heap/" title="HeapSort" itemprop="url">HeapSort</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/118224772589648180000?rel=author" title="AlexYoung" target="_blank" itemprop="author">AlexYoung</a>
+		
+  <p class="article-time">
+    <time datetime="2014-12-07T06:52:35.000Z" itemprop="datePublished"> 发表于 12月 7 2014</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#堆排序"><span class="toc-number">1.</span> <span class="toc-text">堆排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#保持堆的性质"><span class="toc-number">1.1.</span> <span class="toc-text">保持堆的性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#建堆"><span class="toc-number">1.2.</span> <span class="toc-text">建堆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#堆排序-1"><span class="toc-number">1.3.</span> <span class="toc-text">堆排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优先级队列"><span class="toc-number">2.</span> <span class="toc-text">优先级队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#伪代码"><span class="toc-number">2.1.</span> <span class="toc-text">伪代码</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="堆排序">堆排序</h2>
+<p>堆数据结构是一种数组对象，它可以被视为一颗完全二叉树，树中每个节点与数组中存放该节点值的元素对应。堆分为大根堆和小根堆；大根堆是指除根节点以外每个节点<code>i</code>都有<code>A[parent(i)]&gt;=A[i]</code>，即每个节点的值最多和父节点的值一样大，这样堆中的最大值就在根节点中，且以某个节点为根的子树中，各个节点的值都不大于该子树根节点的值，图1就是一个大根堆。小根堆的刚好相反，每个节点的值都不小于其父节点。</p>
+<center><img src="http://alexyoung.qiniudn.com/B44BD10DE99C61C6E965337C8EFFBE6A_B500_900_392_301.PNG" alt=""></center>
+
+<h3 id="保持堆的性质">保持堆的性质</h3>
+<p><strong>maxHeapify</strong>是对大根堆进行操作的重要子程序，其输入为一个数组A和一个下标i，maxHeapify被调用时假定left(i)和right(i)都满足大根堆的性质，但是A[i]有可能小于其子女而违反了大根堆性质，maxHeapify使A[i]下降，使以A[i]为根的堆成为大根堆。其过程如图 2所示：<br><img src="http://alexyoung.qiniudn.com/CBDE478800037BD91BF72E29598EFEBD_B500_900_500_341.PNG" alt=""><br><br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">maxHeapify</span>(<span class="keyword">int</span>[] data, <span class="keyword">int</span> length, <span class="keyword">int</span> index){</div><div class="line">		<span class="keyword">int</span> left = getLeftChildIndex(index);</div><div class="line">		<span class="keyword">int</span> right = getRightChildIndex(index);</div><div class="line">		<span class="keyword">int</span> largest = index;</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> (left &lt; length && data[left] &gt; data[index]) {</div><div class="line">			largest = left;</div><div class="line">		}</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> (right &lt; length && data[right] &gt; data[largest]) {</div><div class="line">			largest = right;</div><div class="line">		}</div><div class="line">		</div><div class="line">		<span class="keyword">if</span> (largest != index) {</div><div class="line">			<span class="keyword">int</span> temp = data[index];</div><div class="line">			data[index] = data[largest];</div><div class="line">			data[largest] = temp;</div><div class="line">			maxHeapify(data, length, largest);</div><div class="line">		}</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<h3 id="建堆">建堆</h3>
+<p><strong>buildMaxHeap</strong>算法是利用maxHeapify算法来进行的。用数组存储一个有n个元素堆时，叶节点的下标是n/2+1、n/2+2……n（这里就不做证明了，有兴趣可以自己证明），建立大根堆就是利用这个性质。叶节点可以看做只有一个元素的堆，只有一个元素也就自然满足大根堆的性质，所以以叶节点为根的堆都是大根堆。但是以其它节点为根的堆就不一定是大根堆，为了使他们满足大根堆的性质，就在节点上调用maxHeapify（叶节点是大根堆就满足了函数输入时的条件）。所以建立大根堆的过程就是在除叶节点以为的节点上调用maxHeapify。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildMaxHeap</span>(<span class="keyword">int</span>[] data){</div><div class="line">		<span class="keyword">int</span> start = getParentIndex(data.length);</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &gt;= <span class="number">0</span>; i--) {</div><div class="line">			maxHeapify(data, data.length, i);</div><div class="line">		}</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<h3 id="堆排序-1">堆排序</h3>
+<p><strong>heapSort</strong>也是利用maxHeapify算法来进行的。在一个大根堆中，最大元素就是堆的根。堆排序就是利用的这个性质。在一个含有n个元素的数组上调用buildMaxHeap，就能得到最大的元素，然后将最大的元素和数组的尾部，再将最大元素从堆中除去，此时堆的元素为n-1个，但是不满足大根堆的性质，就在根节点上调用maxHeapify使其成为大根堆。不断重复这个过程直到堆中只剩下一个元素，就完成了排序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">heapSort</span>(<span class="keyword">int</span>[] data){</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = data.length - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) {</div><div class="line">			<span class="keyword">int</span> temp = data[<span class="number">0</span>];</div><div class="line">			data[<span class="number">0</span>]	= data[i];</div><div class="line">			data[i] = temp;</div><div class="line">			maxHeapify(data, i, <span class="number">0</span>);</div><div class="line">		}</div><div class="line">	}</div></pre></td></tr></table></figure>
+
+<h2 id="优先级队列">优先级队列</h2>
+<p>优先级队列是一种用来维护由一组数组元素构成集合S的数据结构，每个元素都有一个关键字key。</p>
+<ul>
+<li>INSERT(S,x)：元素x插入集合S</li>
+<li>MAXIMUN(S)：返回S中具有最大key的元素</li>
+<li>EXTRACT-MAX(S)：去掉并返回S中具有最大key的元素</li>
+<li>INCREASE-KEY(S,x,k)：将元素x的key值增加到k，k&gt;=key</li>
+</ul>
+<h3 id="伪代码">伪代码</h3>
+<p>HEAP-MAXIMUN(A)，时间复杂度<code>O(1)</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> A[<span class="number">1</span>];</div></pre></td></tr></table></figure>
+
+<p>HEAP-EXTRACT-MAX(A)，时间复杂度<code>O(lgn)</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> heap-size[A]&lt;<span class="number">1</span></div><div class="line">    then error <span class="string">"heap underflow"</span></div><div class="line">max ← A[<span class="number">1</span>]</div><div class="line">A[<span class="number">1</span>] ← A[heap-size[A]]</div><div class="line">heap-size[A] ← heap-size[A]-<span class="number">1</span></div><div class="line">MAX-HEAPIFY(A,<span class="number">1</span>)</div><div class="line"><span class="keyword">return</span> max</div></pre></td></tr></table></figure>
+
+<p>HEAP-INCREASE-KEY(A,i,key)，时间复杂度<code>O(lgn)</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> key&lt;A[i]</div><div class="line">    then error <span class="string">"new key is smaller than the current key"</span></div><div class="line">A[i] ← key</div><div class="line"><span class="keyword">while</span> i&gt;<span class="number">1</span> && A[parent[i]]&lt;A[i]</div><div class="line">    do exchange A[i] ↔ A[parent[i]]</div><div class="line">    i ← parent(i)</div></pre></td></tr></table></figure>
+
+<p>HEAP-INSERT(A,key)，时间复杂度<code>O(lgn)</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">heap-size[A] ← heap-size[A]+<span class="number">1</span></div><div class="line">A[heap-size[A]] ← -∞</div><div class="line">HEAP-INCREASE-KEY(A,heap-size[A],key)</div></pre></td></tr></table></figure>
+
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/heap/">heap</a><a href="/tags/coding/">coding</a>
+  </div>
+
+</div>
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://alexyyek.github.io/2014/12/07/heap/" data-title="HeapSort | AlexYoung&#39;s blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/12/07/lineSort/" title="线性时间排序">
+  <strong>上一篇：</strong><br/>
+  <span>
+  线性时间排序</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/12/06/CountAndSay/"  title="Count And Say">
+ <strong>下一篇：</strong><br/> 
+ <span>Count And Say
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+
+<section class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#堆排序"><span class="toc-number">1.</span> <span class="toc-text">堆排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#保持堆的性质"><span class="toc-number">1.1.</span> <span class="toc-text">保持堆的性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#建堆"><span class="toc-number">1.2.</span> <span class="toc-text">建堆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#堆排序-1"><span class="toc-number">1.3.</span> <span class="toc-text">堆排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优先级队列"><span class="toc-number">2.</span> <span class="toc-text">优先级队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#伪代码"><span class="toc-number">2.1.</span> <span class="toc-text">伪代码</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/JVM/" title="JVM">JVM<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Java/" title="Java">Java<sup>24</sup></a></li>
+		
+			<li><a href="/categories/生活感悟/" title="生活感悟">生活感悟<sup>3</sup></a></li>
+		
+			<li><a href="/categories/黑科技/" title="黑科技">黑科技<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>18</sup></a></li>
+		
+			<li><a href="/tags/leetcode/" title="leetcode">leetcode<sup>6</sup></a></li>
+		
+			<li><a href="/tags/stack/" title="stack">stack<sup>3</sup></a></li>
+		
+			<li><a href="/tags/skill/" title="skill">skill<sup>3</sup></a></li>
+		
+			<li><a href="/tags/life/" title="life">life<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Tree/" title="Tree">Tree<sup>2</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Arrays/" title="Arrays">Arrays<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/" title="Bit Manipulation">Bit Manipulation<sup>1</sup></a></li>
+		
+			<li><a href="/tags/heap/" title="heap">heap<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Movie/" title="Movie">Movie<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dfs/" title="dfs">dfs<sup>1</sup></a></li>
+		
+			<li><a href="/tags/consectetur/" title="consectetur">consectetur<sup>0</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://coolshell.cn/" target="_blank" title="CoolShell">CoolShell</a></li>
+	  <li><a href="http://it.deepinmind.com/index.html" target="_blank" title="DeepinMind">DeepinMind</a><li>
+	  <li><a href="http://mindhacks.cn/" target="_blank" title="MindHacks">MindHacks</a></li> 
+	  <li><a href="https://www.byvoid.com/" target="_blank" title="Beyond the Void">Beyond the Void</a></li> 
+	  <li><a href="http://rednaxelafx.iteye.com/" target="_blank" title="Script Ahead, Code Behind">Script Ahead,Code Behind</a></li> 
+	   <li><a href="http://wmbriggs.com/blog/" target="_blank" title="WILLIAM M. BRIGGS">WILLIAM M. BRIGGS</a></li> 
+	  </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1397989251&verifier=23b91096&dpc=1"></iframe>
+</div>
+
+  <div class="pay">
+  <p class="asidetitle">赞助我</p>
+	<aside id="text-8" class="widget widget_text">
+	<br/>
+	<div align="center">
+	<div class="textwidget">
+	<form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK"> <input name="optEmail" type="hidden" value="alexyyek@126.com"> 
+	<input name="payAmount" type="hidden" value="10">
+	<input name="title" type="hidden" value="赞助AlexYoung">
+	<input name="memo" type="hidden" value="感谢您的赞助">
+	<input name="pay" type="image" value="捐款" src="/img/alipay1.png">
+	</form>
+	</div>
+</aside>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div align="center">
+<br/>
+	欢迎第
+	<a href="http://www.amazingcounters.com"><img border="0" src="http://cc.amazingcounters.com/counter.php?i=3183127&c=9549694" alt="AmazingCounters.com">
+	</a>
+	位访问者
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Labeling is cheap. Show me the story <br/>
+			 </p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/Alexyyek" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/57383464" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="https://plus.google.com/118224772589648180000?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:alexyyek@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/Alexyyek/geekman" target="_blank" title="Pacman">Geekman</a> © 2015 
+		
+		<a href="http://alexyyek.github.io/about" target="_blank" title="AlexYoung">AlexYoung</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"alexyyek"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/x-mathjax-config"> 
+MathJax.Hub.Config({ 
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+}); 
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>

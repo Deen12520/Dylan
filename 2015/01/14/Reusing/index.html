@@ -1,0 +1,653 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu-site-verification" content="GliC1jSe3E" />
+  
+    <title>Java复用类 | AlexYoung&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="AlexYoung">
+    
+    <meta name="description" itemprop="description" content="One of the most compelling features about Java is code reuse. But to be revolutionary, you’ve got to be able to do a lot more than copy code and change it.">
+    
+    
+    
+    
+    <link rel="alternative" href="/atom.xml" title="AlexYoung&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="AlexYoung&#39;s blog" title="AlexYoung&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="AlexYoung&#39;s blog">AlexYoung&#39;s blog</a></h1>
+				<h2 class="blog-motto">当你的才华还撑不起你的野心时，你就应该静下心来学习。</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:alexyyek.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/01/14/Reusing/" title="Java复用类" itemprop="url">Java复用类</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="https://plus.google.com/118224772589648180000?rel=author" title="AlexYoung" target="_blank" itemprop="author">AlexYoung</a>
+		
+  <p class="article-time">
+    <time datetime="2015-01-14T12:48:39.000Z" itemprop="datePublished"> 发表于 1月 14 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#组合语法"><span class="toc-number">1.</span> <span class="toc-text">组合语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#继承"><span class="toc-number">2.</span> <span class="toc-text">继承</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#继承的初始化"><span class="toc-number">2.1.</span> <span class="toc-text">继承的初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#继承语法"><span class="toc-number">2.2.</span> <span class="toc-text">继承语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#清理"><span class="toc-number">2.3.</span> <span class="toc-text">清理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#名称屏蔽"><span class="toc-number">2.4.</span> <span class="toc-text">名称屏蔽</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组合与继承的选择"><span class="toc-number">3.</span> <span class="toc-text">组合与继承的选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Protected关键字"><span class="toc-number">4.</span> <span class="toc-text">Protected关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#向上转型"><span class="toc-number">5.</span> <span class="toc-text">向上转型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final关键字"><span class="toc-number">6.</span> <span class="toc-text">final关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#final_data"><span class="toc-number">6.1.</span> <span class="toc-text">final data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#final_method"><span class="toc-number">6.2.</span> <span class="toc-text">final method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#final_classes"><span class="toc-number">6.3.</span> <span class="toc-text">final classes</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>多数时候我们不希望重新编写代码，而是希望使用已有的代码并加以更改或添加，类的复用为我们提供了这种机制，这也是面向对象语言重要的特点之一。复用类的主要方法有两种，组合与继承。继承和组合都是一种随思想渗透而下的编码方式，其根本目的都是为了复用类，减少重复代码。要实现一个类的复用，可以分为组合语法和继承语法。</p>
+<h2 id="组合语法">组合语法</h2>
+<blockquote>
+<p>《Thinking in Java》：在新的类中产生现有类的对象。</p>
+</blockquote>
+<p>组合就是通过将一个对象置于一个新类中，将其作为新类的成员变量，组成类的一部分。由于新的类是由现有类的对象组成，所以称此方法为组合。</p>
+<p>来看一段代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">class WaterSource{</div><div class="line">	<span class="keyword">private</span> String s;</div><div class="line">	WaterSource(){</div><div class="line">		System.out.println(<span class="string">"WaterSource()"</span>);</div><div class="line">		s = <span class="string">"constructed"</span>;</div><div class="line">	}</div><div class="line">	<span class="keyword">public</span> String <span class="title">toString</span>(){</div><div class="line">		<span class="keyword">return</span> s;</div><div class="line">	}</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SprinklerSystem</span> </span>{</div><div class="line">	<span class="keyword">private</span> String name = <span class="string">"Alex"</span>;<span class="comment">//Initializing at point of definition</span></div><div class="line">	<span class="keyword">private</span> String sex;</div><div class="line">	<span class="keyword">private</span> WaterSource wSource;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">double</span> d;</div><div class="line">	<span class="keyword">public</span>  <span class="title">SprinklerSystem</span>(){</div><div class="line">		System.out.println(<span class="string">"In Sprinkler"</span>);</div><div class="line">		d = <span class="number">1.0</span>;    <span class="comment">//Initailizing in the constructor of class</span></div><div class="line">		wSource = <span class="keyword">new</span> WaterSource();</div><div class="line">	}</div><div class="line">	<span class="keyword">public</span> String <span class="title">toString</span>(){</div><div class="line">		<span class="keyword">if</span> (sex == <span class="keyword">null</span>) { sex = <span class="string">"male"</span>; }<span class="comment">//Delayed initialization</span></div><div class="line">		<span class="keyword">return</span> </div><div class="line">			<span class="string">"string"</span> + <span class="string">"="</span> + name + <span class="string">" "</span> +</div><div class="line">			<span class="string">"sex"</span> + <span class="string">"="</span> + sex + <span class="string">" "</span> +</div><div class="line">			<span class="string">"double"</span> + <span class="string">"="</span> + d + <span class="string">" "</span> +</div><div class="line">			<span class="string">"WaterSource"</span> + <span class="string">"="</span> + wSource;</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">		SprinklerSystem sprinklers = <span class="keyword">new</span> SprinklerSystem();</div><div class="line">		System.out.println(sprinklers);</div><div class="line">	}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>我们可以看到，类SprinklerSystem中直接产生现有的类WaterSource，以此可以使用关于WaterSource的各种方法。</p>
+<p>但注意这里两个类中都有一个很特殊的方法：toString()。</p>
+<p>当编译器需要一个String而你只有一个对象wSource时，由于只能将两个String对象相加，因此编译器会调用toString方法，将wSource转化为一个String。当然如果没有写toString方法，这里会打印对象的地址。</p>
+<p>打印输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">In Sprinkler</div><div class="line">WaterSource()</div><div class="line">string=Alex sex=male <span class="keyword">double</span>=<span class="number">1.0</span> WaterSource=constructed</div></pre></td></tr></table></figure>
+
+<p>此外，编译器并不是简单的为每一个引用都创建默认对象，避免不必要的负担。如果想初始化这些引用，可以在例子中的这些位置进行：</p>
+<ol>
+<li>定义对象的地方</li>
+<li>在类的构造器中</li>
+<li>在正要使用这些对象之前</li>
+<li>使用实例初始化</li>
+</ol>
+<p>由此可以看出：组合是在新类产生现有类的对象，组合出功能给更强的新类。</p>
+<p><strong>如果将继承比作Is-A的关系（什么是什么..），组合则是Has-A(什么有什么)的关系。</strong></p>
+<h2 id="继承">继承</h2>
+<blockquote>
+<p>《Thinking in Java》：通过现有类的类型创建新类，采用现有类的形式并在其中添加新代码。</p>
+</blockquote>
+<p>当创建一个类时，总是在继承，因此除非已明确指出要从其他类中继承，否则就是隐式的从Java的标准根类Object进行继承。继承通过<code>extends</code>关键字自动获得基类中的所有域和方法。在看下面的例子前建议先理解<code>super</code>关键字的 → <a href="http://docs.oracle.com/javase/tutorial/java/IandI/super.html" target="_blank" rel="external">用法</a>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div></pre></td><td class="code"><pre><div class="line">class Base {</div><div class="line">	<span class="keyword">static</span> <span class="keyword">int</span> s1 = prt(<span class="string">"s1 initialized."</span>, <span class="number">11</span>);</div><div class="line">	<span class="keyword">int</span> i1 = prt(<span class="string">"i1 initialized."</span>, <span class="number">12</span>);</div><div class="line"></div><div class="line">	Base() {</div><div class="line">		System.out.println(<span class="string">"Base construcor"</span>);</div><div class="line">		System.out.println(<span class="string">"s1 = "</span> + s1 + <span class="string">" ,i1 = "</span> + i1);</div><div class="line">		draw();<span class="comment">// （d）</span></div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">void</span> draw() {</div><div class="line">		System.out.println(<span class="string">"base.draw：s1 = "</span> + s1 + <span class="string">" ,i1 = "</span> + i1);</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">static</span> <span class="keyword">int</span> prt(String s, <span class="keyword">int</span> num) {</div><div class="line">		System.out.println(s);</div><div class="line">		<span class="keyword">return</span> num;</div><div class="line">	}</div><div class="line">}</div><div class="line"></div><div class="line">class Cleanser extends Base {</div><div class="line">	<span class="keyword">private</span> String s = <span class="string">"Cleaner"</span>;</div><div class="line">	<span class="keyword">static</span> <span class="keyword">int</span> s2 = prt(<span class="string">"s2 initialized."</span>, <span class="number">21</span>);</div><div class="line">	<span class="keyword">int</span> i2 = prt(<span class="string">"i2 initialized."</span>, <span class="number">22</span>);</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="title">Cleanser</span>() {</div><div class="line">		System.out.println(<span class="string">"Cleanser constructor"</span>);</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="title">Cleanser</span>(<span class="keyword">int</span> i) {</div><div class="line">		System.out.println(<span class="string">"Cleanser constructor init i:"</span> + i);</div><div class="line">		System.out.println(<span class="string">"s2 = "</span> + s2 + <span class="string">" ,i2 = "</span> + i2);</div><div class="line">		draw();</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">append</span>(String a) {</div><div class="line">		s += a;</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dilute</span>() {</div><div class="line">		append(<span class="string">" dilute()"</span>);</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrub</span>() {</div><div class="line">		append(<span class="string">" scrub()"</span>);</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">void</span> draw(){</div><div class="line">        System.out.println(<span class="string">"Cleanser.draw：s2 = "</span> + s2 + <span class="string">" ,i2 = "</span> + i2);</div><div class="line">    }</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> String <span class="title">toString</span>() {</div><div class="line">		<span class="keyword">return</span> s;</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">		Cleanser x = <span class="keyword">new</span> Cleanser();</div><div class="line">		x.dilute();</div><div class="line">		x.scrub();</div><div class="line">		System.out.println(x);</div><div class="line">	}</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Detergent</span> <span class="keyword">extends</span> <span class="title">Cleanser</span> </span>{</div><div class="line">	<span class="keyword">static</span> <span class="keyword">int</span> s3 = prt(<span class="string">"s3 initialized."</span>, <span class="number">31</span>);</div><div class="line">    <span class="keyword">int</span> i3 = prt(<span class="string">"i3 initialized"</span>, <span class="number">31</span>);</div><div class="line">    </div><div class="line">	<span class="keyword">public</span> <span class="title">Detergent</span>() {</div><div class="line">		<span class="keyword">super</span>(<span class="number">1024</span>);</div><div class="line">		System.out.println(<span class="string">"Detergent construcor"</span>);</div><div class="line">		System.out.println(<span class="string">"s3 = "</span> + s3 + <span class="string">" ,i3 = "</span> + i3);</div><div class="line">		draw();</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scrub</span>() {</div><div class="line">		append(<span class="string">" Detergent.scrub()"</span>);</div><div class="line">		<span class="keyword">super</span>.scrub();</div><div class="line">	}</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">foam</span>() {</div><div class="line">		append(<span class="string">" foam()"</span>);</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">void</span> draw(){</div><div class="line">        System.out.println(<span class="string">"Detergent.draw：s3 = "</span> + s3 + <span class="string">" ,i3 = "</span> + i3);</div><div class="line">    }</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">		Detergent detergent = <span class="keyword">new</span> Detergent();</div><div class="line">		detergent.dilute();</div><div class="line">		detergent.scrub();</div><div class="line">		detergent.foam();</div><div class="line">		System.out.println(detergent);</div><div class="line">		System.out.println(<span class="string">"Test base class:"</span>);</div><div class="line">		Cleanser.main(args);</div><div class="line">	}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这个例子糅合了继承中许多重要的点，我们首先分析一下基本框架，程序包含三个类，Base类、继承Base的Cleanser类，继承Cleanser的Detergent类。类中包含了静态成员，非静态成员，以及类内部的方法。下面来梳理程序流程。</p>
+<h3 id="继承的初始化">继承的初始化</h3>
+<p>$1$. 装载Detergent.class文件<br>$2$. 发现Detergent有关键字extends，装载Cleanser.class文件<br>$3$. 发现Cleanser有关键字extends，装载Base.class文件<br>$4$. 初始化Base class中的静态成员。初始化Cleanser class中的静态成员。初始化Detergent class中的静态成员。<strong>如果Detergent的main函数为空，到这里已经初始化完毕。</strong>输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">s1 initialized.</div><div class="line">s2 initialized.</div><div class="line">s3 initialized.</div></pre></td></tr></table></figure>
+
+<blockquote>
+<p>《Thinking in Java》：继承并不只是复制基类的接口。当创建了一个导出类的对象时，该对象包含了一个基类的子对象。</p>
+</blockquote>
+<p>$5$. 为detergent对象分配存储空间，并把存储空间初始化为0。在Detergent的构造器中调用super(1024)，试图产生一个Cleanser class实例。<br>$6$. 为Cleanser对象分配存储空间。由于Cleanser类继承自Base类，会在Cleanser类的构造器中调用Base的无参构造函数。<br>$7$. 产生一个Base class实例。先初始化成员变量，再调用构造函数。回到Cleanser类执行同样步骤，Detergent类亦如此。</p>
+<p>至创建detergent对象结束后，初始化的输出结果如下，其中要注意几点：</p>
+<ul>
+<li>继承中的构建过程是“向外”扩散的，先初始化基类，后初始化导出类。</li>
+<li>注意Detergent类构造函数中<code>super</code>的使用，super用于导出类的构造函数，可以调用基类的构造方法。如果基类<strong>没有默认构造器或者带有参数</strong>，则需要显式构造，构造方法则是上面提到过的super，当然super要放在构造函数内第一行。</li>
+<li>注意Base类和Cleanser类构造函数中的draw()方法，并没有按想象中直接调用类内部的draw()，而是统一调用了子类Detergent中的draw()方法。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">i1 initialized.</div><div class="line">Base construcor</div><div class="line">s1 = <span class="number">11</span> ,i1 = <span class="number">12</span></div><div class="line">Detergent.draw：s3 = <span class="number">31</span> ,i3 = <span class="number">0</span></div><div class="line">i2 initialized.</div><div class="line">Cleanser constructor init i:<span class="number">1111</span></div><div class="line">s2 = <span class="number">21</span> ,i2 = <span class="number">22</span></div><div class="line">Detergent.draw：s3 = <span class="number">31</span> ,i3 = <span class="number">0</span></div><div class="line">i3 initialized</div><div class="line">Detergent construcor</div><div class="line">s3 = <span class="number">31</span> ,i3 = <span class="number">31</span></div><div class="line">Detergent.draw：s3 = <span class="number">31</span> ,i3 = <span class="number">31</span></div></pre></td></tr></table></figure>
+
+<h3 id="继承语法">继承语法</h3>
+<p>在创建完detergent对象后，detergent对象开始调用不同方法，在Cleanser的接口中有一组方法：append()，dilute()，scrub()，draw()和toString()。由于Detergent是由关键字<code>extends</code>从Cleanser导出的，所以它可以再其接口中自动获得这些方法，因此可以将继承视作是对类的复用。</p>
+<p>在Detergent中，我们复用了部分Cleanser中的方法，但改写了其中的scrub()，如果需要在新版本中调用从基类继承而来的方法，可以利用<code>super</code>关键字，正如开头链接中<code>super</code>的第一种使用方法：Accessing Superclass Members。</p>
+<p>当然在继承中并不一定非要使用基类的方法，可以在导出类中添加新的方法，如Detergent类中新增的foam()方法。后续输出结果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Cleaner dilute() Detergent.scrub() scrub() foam()</div><div class="line">Test base class:</div><div class="line">i1 initialized.</div><div class="line">Base constructor</div><div class="line">s1 = <span class="number">11</span> ,i1 = <span class="number">12</span></div><div class="line">Cleanser.draw：s2 = <span class="number">21</span> ,i2 = <span class="number">0</span></div><div class="line">i2 initialized.</div><div class="line">Cleanser constructor</div><div class="line">Cleaner dilute() scrub()</div></pre></td></tr></table></figure>
+
+<h3 id="清理">清理</h3>
+<p>清理过程是先执行导出类的清理代码，再执行基类的清除代码。这就像一棵大树，生长的时候要从根向叶子生长，但剪除的时候要从叶子向根剪除。如果一下子去掉了根，那么叶子你也就都找不到了。这种清理与以前说过的finalize方法不同，如果要执行这种清理工作，最好还是自己编写清理代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class Shape {</div><div class="line">    Shape(<span class="keyword">int</span> i) { print(<span class="string">"Shape constructor"</span>); }</div><div class="line">    <span class="keyword">void</span> dispose() { print(<span class="string">"Shape dispose"</span>); }</div><div class="line">}</div><div class="line">class Circle extends Shape {</div><div class="line">    Circle(<span class="keyword">int</span> i) {</div><div class="line">        <span class="keyword">super</span>(i);</div><div class="line">        print(<span class="string">"Drawing Circle"</span>);</div><div class="line">    }</div><div class="line">    <span class="keyword">void</span> dispose() {</div><div class="line">        print(<span class="string">"Erasing Circle"</span>);</div><div class="line">        <span class="keyword">super</span>.dispose();</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="名称屏蔽">名称屏蔽</h3>
+<p>如果Java的基类拥有某个已被多次重载的方法名称，那么在导出类中重新定义该方法名称并不会屏蔽其在基类中的任何版本（与C++不同）。Java SE5新增了<code>@Override</code>注释，它并不是关键字，但是可以当做关键字使用。当你想要<strong><code>覆写</code></strong>某个方法时，可以选择添加这个注解，防止你不留心重载了该方法。通过下面表格区分重载和覆写：<br><br></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">范围</th>
+<th style="text-align:center">重载（Overload）</th>
+<th style="text-align:center">覆写（Override）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">范围</td>
+<td style="text-align:center">类内定义方法的不同版本</td>
+<td style="text-align:center">子类为满足需要重复定义某个方法的不同实现</td>
+</tr>
+<tr>
+<td style="text-align:center">方法名</td>
+<td style="text-align:center">相同</td>
+<td style="text-align:center">相同</td>
+</tr>
+<tr>
+<td style="text-align:center">参数列表</td>
+<td style="text-align:center">必须不同</td>
+<td style="text-align:center">相同</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值类型</td>
+<td style="text-align:center">可以不同</td>
+<td style="text-align:center">相同</td>
+</tr>
+</tbody>
+</table>
+<h2 id="组合与继承的选择">组合与继承的选择</h2>
+<p>组合与继承都允许在新的类中放置子对象，组合是显示的这样做，而继承是隐式地做。</p>
+<p>组合技术通常用于想在新类中使用现有类的功能，而非它的接口。即在新类中嵌入某个对象，让其实现所需要的功能，但新类的用户只能看到为新类定义的接口，而非所有嵌入对象的接口。为取得此效果，<strong>需要在新类中嵌入一个现有类的private对象</strong>。</p>
+<p>继承常用于你在使用一个通用类时，为了某种特殊需求而将其特殊化，开发一个它的特殊版本。就像开头说的：<strong>如果将继承比作Is-A的关系（什么是什么..），组合则是Has-A(什么有什么)的关系。</strong></p>
+<h2 id="Protected关键字">Protected关键字</h2>
+<p>讲完了继承，关键字protected也终于有了意义。在实际项目中，经常会想要境某些事物尽可能<strong>对这个世界隐藏起来，但仍然允许导出类或者其他位于同一个包内的类来说，它却是可以访问的</strong>。（protected也提供了包内访问权限）</p>
+<p>尽管可以创建protected域，但是最好的方式还是将域保持为private；你应当一直保留<strong>更改底层实现的权利。</strong>然后通过protected方法来控制类的继承者的访问权限。</p>
+<blockquote>
+<p>The protected modifier specifies that the member can only be accessed within its own package (as with package-private) and, in addition, by a subclass of its class in another package.</p>
+</blockquote>
+<h2 id="向上转型">向上转型</h2>
+<blockquote>
+<p>《Thinking in Java》：The most important aspect of <strong>inheritance</strong> is not that it provides methods for the new class.It’s the <strong>relationship</strong> expressed between the new class and the base class. </p>
+</blockquote>
+<p>Wind类继承了基类Instrument，并创建了Wind对象，但是Instrument类仍可以使用Wind对象，程序代码可以对Instrument和它所有的导出类起作用。由于继承可以确保基类中所有的方法在导出类中也同样有效，所以能够向基类发送的所有信息同样也可以向导出类发送。这种将Wind引用转换为Instrument引用的动作，称为向上转型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">class Instrument {</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span>() {}</div><div class="line">    <span class="keyword">static</span> <span class="keyword">void</span> tune(Instrument i) {</div><div class="line">    i.play(); }</div><div class="line">}</div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Wind</span> <span class="keyword">extends</span> <span class="title">Instrument</span> </span>{</div><div class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {</div><div class="line">        Wind flute = <span class="keyword">new</span> Wind();</div><div class="line">        Instrument.tune(flute); <span class="comment">// Upcasting</span></div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>由于向上转型是从一个较专用类型向较通用类型转换，所以总是很安全的。在向上转型中，类接口中唯一可能发生的事情是丢失方法，而不是获取它们。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">class Game{</div><div class="line">	Game(<span class="keyword">int</span> i){</div><div class="line">		System.out.println(<span class="string">"Game constructor"</span>);</div><div class="line">	}</div><div class="line">}</div><div class="line"></div><div class="line">class BoardGame extends Game{</div><div class="line">	BoardGame(<span class="keyword">int</span> i){</div><div class="line">		<span class="keyword">super</span>(i);</div><div class="line">		System.out.println(<span class="string">"BoardGame constructor"</span>);</div><div class="line">	}</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Chess</span> <span class="keyword">extends</span> <span class="title">BoardGame</span></span>{</div><div class="line">	Chess(){</div><div class="line">		<span class="keyword">super</span>(<span class="number">250</span>);</div><div class="line">		System.out.println(<span class="string">"Chess constructor"</span>);</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">f</span>(){};</div><div class="line">	</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">		Game game = <span class="keyword">new</span> Chess();    <span class="comment">//向上转型</span></div><div class="line">		<span class="comment">/* Error </span></div><div class="line">		 * The method f() is undefined for the type Game</div><div class="line">		   game.f(); */</div><div class="line">	}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>如果运行Chess，输出的是Game constructor 还是三个类全部初始化？</p>
+<p>答案是全部初始化，即创建了子类Chess对象。这是因为game实际上指向的是一个子类对象。当然，你不用担心，Java虚拟机会自动准确地识别出究竟该调用哪个具体的方法。不过，由于向上转型，game对象会遗失和父类不同的方法，例如f()。</p>
+<p>向上转型可以简化程序代码，例如这里的Monitor类 → <a href="http://blog.csdn.net/shanghui815/article/details/6088588" target="_blank" rel="external">栗子</a></p>
+<h2 id="final关键字">final关键字</h2>
+<p>为了设计或效率这两个截然不同的目的，我们可能会使用到final关键字。</p>
+<h3 id="final_data">final data</h3>
+<p>相比于C/C++中的const关键字，Java使用final来声明数据。对于基本类型，final保证数值恒定不变；用于对象引用，则保证引用恒定不变，也就是说无法再把该引用指向另一个对象。通常声明一个常量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> VALUE = <span class="number">10</span>;</div></pre></td></tr></table></figure>
+
+<p>定义为static强调只有一份，定义为final说明它是一个常量。</p>
+<ul>
+<li>final声明的变量，意味着无法将其引用对象再次指向另一个新的对象，而不是无法改变它的值。</li>
+<li>带有恒等初始值的final static基本类型全用大写字母命名。</li>
+<li>final成员变量必须在声明的时候初始化，或在构造器中初始化。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">class Vincent{</div><div class="line">	<span class="keyword">int</span> i;</div><div class="line">	<span class="keyword">public</span> <span class="title">Vincent</span>(<span class="keyword">int</span> i){</div><div class="line">		<span class="keyword">this</span>.i = i;</div><div class="line">	}</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalData</span></span>{</div><div class="line">	</div><div class="line">	<span class="keyword">private</span> String id;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Random random = <span class="keyword">new</span> Random(<span class="number">25</span>);</div><div class="line">	FinalData(String id){</div><div class="line">		<span class="keyword">this</span>.id = id;</div><div class="line">	}</div><div class="line">	</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> first = <span class="number">1024</span>;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SECOND = <span class="number">2048</span>;</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THIRD = <span class="number">3072</span>;</div><div class="line">	</div><div class="line">	<span class="keyword">private</span> Vincent v1 = <span class="keyword">new</span> Vincent(<span class="number">1024</span>);</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Vincent v2 = <span class="keyword">new</span> Vincent(<span class="number">2048</span>);</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Vincent V3 = <span class="keyword">new</span> Vincent(<span class="number">3072</span>);</div><div class="line">	</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> rand = random.nextInt(<span class="number">100</span>);</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RAND = random.nextInt(<span class="number">100</span>); </div><div class="line">	</div><div class="line">	<span class="keyword">public</span> String <span class="title">toString</span>(){</div><div class="line">		<span class="keyword">return</span> id + <span class="string">"\t"</span> + rand + <span class="string">"\t"</span> + RAND; </div><div class="line">	}</div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){</div><div class="line">		FinalData fData = <span class="keyword">new</span> FinalData(<span class="string">"first trial"</span>);</div><div class="line">		</div><div class="line">		<span class="comment">/*	Error: Can't change value</span></div><div class="line">		 * 	fData.first++;</div><div class="line">		 */</div><div class="line">		</div><div class="line">		fData.v1.i++;</div><div class="line">		fData.v2.i++;</div><div class="line">		</div><div class="line">		fData.v1 = <span class="keyword">new</span> Vincent(<span class="number">1</span>); <span class="comment">//withour final</span></div><div class="line">		</div><div class="line">		<span class="comment">/* Error: Can't change reference </span></div><div class="line">		 * fData.v2 = new Value(2);</div><div class="line">		 * fData.V3 = new Value(3);</div><div class="line">		 */</div><div class="line">		</div><div class="line">		System.out.println(fData);	<span class="comment">//first trial	28	81</span></div><div class="line">		FinalData fData2 = <span class="keyword">new</span> FinalData(<span class="string">"second trial"</span>);</div><div class="line">		System.out.println(fData2); <span class="comment">//second trial	47	81</span></div><div class="line">	}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ol>
+<li>对final修饰的基本类型视为常量，不能再修改（如first、SECOND和THIRD）</li>
+<li>final修饰的引用对象，可以改变值，如<code>fData.v2.i++;</code>，但不可修改指向对象。</li>
+<li>不能因为数据是final的就认为在编译时已知了它的值，如rand和RAND，用static修饰的RAND在最开始便初始化完毕，故两次值不变。</li>
+</ol>
+<h3 id="final_method">final method</h3>
+<p>现在使用final方法的原因只有一个：把方法锁定，以防止任何继承类修改他的含义，想要确保继承中使方法行为<strong>保持不变</strong>，并且<strong>不会覆盖</strong>。</p>
+<ul>
+<li>对于实例方法，final意味着在子类<strong>不能重写</strong>该方法，但<strong>可以重载</strong>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Father{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">f</span>(){};</div><div class="line">}</div><div class="line">class Child extends Father{</div><div class="line">    <span class="comment">/* Error: Cannot override the final method from Father</span></div><div class="line">     * public final void f(){};</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">f</span>(<span class="keyword">int</span> i){};</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ul>
+<li>对于静态方法final的含义为，子类中<strong>不能隐藏（覆盖或重写）</strong>这个方法。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class Father{</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">f1</span>(){};</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">f2</span>(){};</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Father</span></span>{</div><div class="line">	<span class="comment">/* Error: This instance method cannot override the static method from Father</span></div><div class="line">	 * public void f(){System.out.println("Alex");}</div><div class="line">	 */</div><div class="line">	</div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">f1</span>(<span class="keyword">int</span> i){System.out.println(<span class="string">"Alex"</span>);}</div><div class="line">    </div><div class="line">    <span class="comment">/* Error: Cannot override the final method from Father</span></div><div class="line">     * public static void f2(){};</div><div class="line">     */</div><div class="line">    </div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">f2</span>(<span class="keyword">int</span> i){};</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>静态方法是可以继承的，但是在子类中即使可以定义一个与父类方法签名相同的方法覆盖掉父类的方法，但是这并不是重写。重写应该在多态性上有所体现，但是覆盖父类静态方法并不会体现<a href="http://segmentfault.com/blog/zhaobing/1190000000669897" target="_blank" rel="external">多态性</a>。</p>
+<h3 id="final_classes">final classes</h3>
+<p>当将某个类整体定义为final时，就表明你不打算继承该类，而且也不允许别人这么做。换句话说，你对该类的设计用不需要做出任何变动，或者是出于安全考虑，你不希望它有子类。</p>
+<p>由于final类禁止继承，所以final类中所有的方法都隐式指定为final的，因为无法覆盖他们。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/coding/">coding</a>
+  </div>
+
+</div>
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://alexyyek.github.io/2015/01/14/Reusing/" data-title="Java复用类 | AlexYoung&#39;s blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/03/04/Polymorphism/" title="Java多态性">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Java多态性</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/01/12/Inherit/"  title="Java访问权限控制">
+ <strong>下一篇：</strong><br/> 
+ <span>Java访问权限控制
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+
+<section class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#组合语法"><span class="toc-number">1.</span> <span class="toc-text">组合语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#继承"><span class="toc-number">2.</span> <span class="toc-text">继承</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#继承的初始化"><span class="toc-number">2.1.</span> <span class="toc-text">继承的初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#继承语法"><span class="toc-number">2.2.</span> <span class="toc-text">继承语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#清理"><span class="toc-number">2.3.</span> <span class="toc-text">清理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#名称屏蔽"><span class="toc-number">2.4.</span> <span class="toc-text">名称屏蔽</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组合与继承的选择"><span class="toc-number">3.</span> <span class="toc-text">组合与继承的选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Protected关键字"><span class="toc-number">4.</span> <span class="toc-text">Protected关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#向上转型"><span class="toc-number">5.</span> <span class="toc-text">向上转型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final关键字"><span class="toc-number">6.</span> <span class="toc-text">final关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#final_data"><span class="toc-number">6.1.</span> <span class="toc-text">final data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#final_method"><span class="toc-number">6.2.</span> <span class="toc-text">final method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#final_classes"><span class="toc-number">6.3.</span> <span class="toc-text">final classes</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/JVM/" title="JVM">JVM<sup>1</sup></a></li>
+		
+			<li><a href="/categories/Java/" title="Java">Java<sup>24</sup></a></li>
+		
+			<li><a href="/categories/生活感悟/" title="生活感悟">生活感悟<sup>3</sup></a></li>
+		
+			<li><a href="/categories/黑科技/" title="黑科技">黑科技<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/coding/" title="coding">coding<sup>18</sup></a></li>
+		
+			<li><a href="/tags/leetcode/" title="leetcode">leetcode<sup>6</sup></a></li>
+		
+			<li><a href="/tags/stack/" title="stack">stack<sup>3</sup></a></li>
+		
+			<li><a href="/tags/skill/" title="skill">skill<sup>3</sup></a></li>
+		
+			<li><a href="/tags/life/" title="life">life<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Tree/" title="Tree">Tree<sup>2</sup></a></li>
+		
+			<li><a href="/tags/hash/" title="hash">hash<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Arrays/" title="Arrays">Arrays<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Bit-Manipulation/" title="Bit Manipulation">Bit Manipulation<sup>1</sup></a></li>
+		
+			<li><a href="/tags/heap/" title="heap">heap<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Movie/" title="Movie">Movie<sup>1</sup></a></li>
+		
+			<li><a href="/tags/dfs/" title="dfs">dfs<sup>1</sup></a></li>
+		
+			<li><a href="/tags/consectetur/" title="consectetur">consectetur<sup>0</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://coolshell.cn/" target="_blank" title="CoolShell">CoolShell</a></li>
+	  <li><a href="http://it.deepinmind.com/index.html" target="_blank" title="DeepinMind">DeepinMind</a><li>
+	  <li><a href="http://mindhacks.cn/" target="_blank" title="MindHacks">MindHacks</a></li> 
+	  <li><a href="https://www.byvoid.com/" target="_blank" title="Beyond the Void">Beyond the Void</a></li> 
+	  <li><a href="http://rednaxelafx.iteye.com/" target="_blank" title="Script Ahead, Code Behind">Script Ahead,Code Behind</a></li> 
+	   <li><a href="http://wmbriggs.com/blog/" target="_blank" title="WILLIAM M. BRIGGS">WILLIAM M. BRIGGS</a></li> 
+	  </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1397989251&verifier=23b91096&dpc=1"></iframe>
+</div>
+
+  <div class="pay">
+  <p class="asidetitle">赞助我</p>
+	<aside id="text-8" class="widget widget_text">
+	<br/>
+	<div align="center">
+	<div class="textwidget">
+	<form action="https://shenghuo.alipay.com/send/payment/fill.htm" method="POST" target="_blank" accept-charset="GBK"> <input name="optEmail" type="hidden" value="alexyyek@126.com"> 
+	<input name="payAmount" type="hidden" value="10">
+	<input name="title" type="hidden" value="赞助AlexYoung">
+	<input name="memo" type="hidden" value="感谢您的赞助">
+	<input name="pay" type="image" value="捐款" src="/img/alipay1.png">
+	</form>
+	</div>
+</aside>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div align="center">
+<br/>
+	欢迎第
+	<a href="http://www.amazingcounters.com"><img border="0" src="http://cc.amazingcounters.com/counter.php?i=3183127&c=9549694" alt="AmazingCounters.com">
+	</a>
+	位访问者
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Labeling is cheap. Show me the story <br/>
+			 </p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/Alexyyek" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/57383464" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="https://plus.google.com/118224772589648180000?rel=author" target="_blank" class="icon-google_plus" title="Google+"></a>
+		
+		
+		<a href="mailto:alexyyek@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/Alexyyek/geekman" target="_blank" title="Pacman">Geekman</a> © 2015 
+		
+		<a href="http://alexyyek.github.io/about" target="_blank" title="AlexYoung">AlexYoung</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"alexyyek"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/x-mathjax-config"> 
+MathJax.Hub.Config({ 
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]} 
+}); 
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F140dd3dc3eb949d6e77762baa6202ce9' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>
